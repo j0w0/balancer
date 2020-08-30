@@ -13,7 +13,7 @@ const billSchema = Schema({
     url: String,
     category: {
         type: Schema.Types.ObjectId,
-        ref: categorySchema
+        ref: 'categorySchema'
     }
 }, {
     timestamps: true
@@ -22,7 +22,7 @@ const billSchema = Schema({
 const lineItemSchema = Schema({
     bill: {
         type: Schema.Types.ObjectId,
-        ref: billSchema
+        ref: 'billSchema'
     },
     paymentAmount: {
         type: Number,
@@ -30,7 +30,7 @@ const lineItemSchema = Schema({
     },
     category: {
         type: Schema.Types.ObjectId,
-        ref: categorySchema
+        ref: 'categorySchema'
     }
 }, {
     timestamps: true
@@ -59,8 +59,11 @@ const categorySchema = Schema({
 });
 
 const userSchema = Schema({
-    name: String,
+    firstName: String,
+    lastName: String,
+    fullName: String,
     email: String,
+    avatar: String,
     googleId: String,
     budget: [ budgetSchema ],
     balances: [ balanceSchema ],

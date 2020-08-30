@@ -1,6 +1,7 @@
 <%- include('partials/header') %>
 
-<h1><%= title %></h1>
-<p>Welcome to <%= title %></p>
+<h1>Dashboard</h1>
+
+<%= !user ? 'not logged in' : `hello, ${user.firstName}` %>
 
 <%- include('partials/footer') %>

@@ -1,20 +1,20 @@
 const User = require('../models/user');
 
 module.exports = {
-    index
+    index,
+    dashboard
 }
 
-function index(req, res, next) {    
-    let modelQuery = req.query.name ? { name: new RegExp(req.query.name, 'i') }: {};
-    let sortKey = req.query.sort || 'name';
+function index(req, res) {    
+    if(req.user) return res.redirect('/dashboard');
 
-    User.find(modelQuery)
-    .sort(sortKey).exec((err, users) => {
-        if(err) return next(err);
-        res.render('index', {
-            users,
-            user: req.user,
-            sortKey
-        });
+    res.render('index', {
+        user: req.user
+    });
+}
+
+function dashboard(req, res) {
+    res.render('dashboard', {
+        user: req.user
     });
 }

@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const passport = require('passport');
-const usersCtrl = require('../controllers/index');
+const rootCtrl = require('../controllers/index');
 
-router.get('/', usersCtrl.index);
-router.get('/dashboard', isLoggedIn, usersCtrl.dashboard);
+router.get('/', rootCtrl.index);
+router.get('/dashboard', isLoggedIn, rootCtrl.dashboard);
 
 router.get('/auth/google', passport.authenticate(
   'google',

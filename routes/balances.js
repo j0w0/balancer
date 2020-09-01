@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const billsCtrl = require('../controllers/bills');
 
-// BILLS
+// BALANCES
 
-router.get('/:id', isLoggedIn, billsCtrl.show);
-router.put('/:id', isLoggedIn, billsCtrl.update);
+router.get('/', isLoggedIn, function(req, res, next) {
+  res.send('respond with a resource');
+});
 
 function isLoggedIn(req, res, next) {
   if(req.isAuthenticated()) return next();

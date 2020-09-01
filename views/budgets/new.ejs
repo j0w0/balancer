@@ -1,0 +1,34 @@
+<%- include('../partials/header') %>
+
+<%
+const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
+%>
+
+<h2>New Budget</h2>
+
+<form action="/budgets" method="POST">
+
+    <label>
+        Budget Name
+        <input type="text" name="name">
+    </label>
+
+    <br /><br />
+
+    <label>
+        Pay Schedule
+    </label><br />
+    <% paySchedules.forEach(schedule => { %>
+    <label>
+        <input type="radio" name="paySchedule" value="<%= schedule %>"> <%= schedule %><br />
+    </label>
+    <%
+    });
+    %>
+
+    <br />
+
+    <button type="submit">Create</button>
+</form>
+
+<%- include('../partials/footer') %>

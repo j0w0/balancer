@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const Budget = require('../models/budget');
 
 module.exports = {
     index,
@@ -7,14 +7,16 @@ module.exports = {
 
 function index(req, res) {    
     if(req.user) return res.redirect('/dashboard');
-
     res.render('index', {
         user: req.user
     });
 }
 
 function dashboard(req, res) {
-    res.render('dashboard', {
-        user: req.user
+    Budget.find({ user: req.user._id }, function(err, budgets) {
+        res.render('dashboard', {
+            user: req.user,
+            budgets
+        });
     });
 }

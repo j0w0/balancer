@@ -1,0 +1,52 @@
+<%- include('../partials/header') %>
+
+<h2><%= bill.name %></h2>
+
+<form action="/bills/<%= bill.id %>?_method=PUT" method="POST">
+
+    <label>
+        Name
+        <input type="text" name="name" value="<%= bill.name %>" required />
+    </label>
+
+    <br /><br />
+
+    <label>
+        Due Date (1-31)
+        <input type="text" name="dueDate" value="<%= bill.dueDate %>" pattern="0*([1-9]|[12][0-9]|3[01])" required />
+    </label>
+
+    <br /><br />
+
+    <label>
+        <input type="checkbox" name="autoPay" value="1" <% if(bill.autoPay) { %> checked <% } %> /> Auto-Pay
+    </label>
+
+    <br /><br />
+
+    <label>
+        Auto-Pay Account
+        <input type="text" name="autoPayAccount" value="<%= bill.autoPayAccount %>" />
+    </label>
+
+    <br /><br />
+
+    <label>
+        Total
+        <input type="text" name="total" value="<%= bill.total.toFixed(2) %>"
+            pattern="^\$?([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(\.[0-9][0-9])?$" required />
+    </label>
+
+    <br /><br />
+
+    <label>
+        Bill Pay Website
+        <input type="text" name="url" value="<%= bill.url %>" />
+    </label>
+
+    <br /><br />
+
+    <button type="submit">Update</button>
+</form>
+
+<%- include('../partials/footer') %>

@@ -2,6 +2,25 @@
 
 <h2>Dashboard</h2>
 
-<%= `Welcome, ${user.firstName}!` %>
+<p><%= `Welcome, ${user.firstName}!` %></p>
+
+<h3>Your Budgets</h3>
+<%
+if(budgets.length > 0) {
+    budgets.forEach(budget => { %>
+
+<p><%= budget.name %> (<%= budget.paySchedule %>) <a href="/budgets/<%= budget.id %>">Manage</a></p>
+
+<%
+    });
+} else { %>
+
+<p>Add a Budget to get this show on the road 🔥</p>
+
+<%
+}
+%>
+
+<a href="/budgets/new">New Budget</a>
 
 <%- include('partials/footer') %>

@@ -1,0 +1,51 @@
+<%- include('../partials/header'); %>
+
+<%
+const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
+%>
+
+<h2>Manage <%= budget.name %> Budget</h2>
+
+<form action="/budgets/<%= budget.id %>?_method=PUT" method="POST">
+    <label>
+        Name <input type="text" name="name" value="<%= budget.name %>" />
+    </label>
+    <label>
+        Pay Schedule
+        <select name="paySchedule">
+            <%
+            paySchedules.forEach(schedule => { %>
+            <option value="<%= schedule %>" <% if(budget.paySchedule === schedule) { %> selected <% } %>>
+                <%= schedule %>
+            </option>
+            <%
+            });
+            %>
+        </select>
+    </label>
+    <button type="submit">Update</button>
+</form>
+
+<br />
+
+<h3>Bills</h3>
+
+<%
+if(budget.bills.length > 0) {
+    budget.bills.forEach(bill => { %>
+
+<p><%= bill.name %> - $<%= bill.total.toFixed(2) %> <a href="/bills/<%= bill.id %>">Update</a></p>
+
+<%
+    });
+} else { %>
+
+<p>No bills yet. Add one to get started 🤘🏼</p>
+
+<%
+}
+%>
+
+<a href="/budgets/<%= budget.id %>/bills/new">Add a Bill</a>
+
+<%- include('../partials/footer') %>

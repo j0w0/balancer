@@ -31,11 +31,15 @@ const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
 <h3>Bills</h3>
 
 <%
-if(budget.bills.length > 0) {
-    budget.bills.forEach(bill => { %>
-
-<p><%= bill.name %> - $<%= bill.total.toFixed(2) %> <a href="/bills/<%= bill.id %>">Update</a></p>
-
+if(bills.length > 0) {
+    bills.forEach(bill => { %>
+<p>
+    <%= bill.name %> - $<%= bill.total.toFixed(2) %>
+    <% if(bill.url) { %>
+    <a href="<%= bill.url %>" target="_blank">Pay Bill</a>
+    <% } %>
+    <a href="/bills/<%= bill.id %>">Update</a>
+</p>
 <%
     });
 } else { %>

@@ -1,4 +1,5 @@
 const Budget = require('../models/budget');
+const Bill = require('../models/bill');
 
 module.exports = {
     index,
@@ -29,10 +30,13 @@ function create(req, res) {
 function show(req, res) {
     Budget.findById(req.params.id, function(err, budget) {
         if(!budget) res.redirect('/dashboard');
-        res.render('budgets/show', {
-            user: req.user,
-            budget
-        });
+        Bill.find({}, (err, bills) => {
+            res.render('budgets/show', {
+                user: req.user,
+                budget,
+                bills
+            });
+        })
     });
 }
 

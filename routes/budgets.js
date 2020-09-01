@@ -10,6 +10,7 @@ router.get('/new', isLoggedIn, budgetsCtrl.new);
 router.post('/', isLoggedIn, budgetsCtrl.create);
 router.get('/:id', isLoggedIn, budgetsCtrl.show);
 router.put('/:id', isLoggedIn, budgetsCtrl.update);
+
 router.get('/:id/bills/new', isLoggedIn, billsCtrl.new);
 router.post('/:id/bills', isLoggedIn, billsCtrl.create);
 

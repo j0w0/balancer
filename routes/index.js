@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 const passport = require('passport');
 const rootCtrl = require('../controllers/index');
+const categoriesCtrl = require('../controllers/categories');
+
+// ROOT
 
 router.get('/', rootCtrl.index);
 router.get('/dashboard', isLoggedIn, rootCtrl.dashboard);

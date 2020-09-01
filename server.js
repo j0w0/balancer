@@ -16,6 +16,7 @@ const indexRouter = require('./routes/index');
 const budgetsRouter = require('./routes/budgets');
 const billsRouter = require('./routes/bills');
 const balancesRouter = require('./routes/balances');
+const lineItemsRouter = require('./routes/lineItems');
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use('/', indexRouter);
 app.use('/budgets', budgetsRouter);
 app.use('/bills', billsRouter)
 app.use('/balances', balancesRouter);
+app.use('/line-items', lineItemsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -3,7 +3,7 @@ var router = express.Router();
 const balancesCtrl = require('../controllers/balances');
 const lineItemsCtrl = require('../controllers/lineItems');
 
-// BALANCES
+// LINE-ITEMS
 
 router.get('/', isLoggedIn, function(req, res) {
   res.send('respond with a resource');

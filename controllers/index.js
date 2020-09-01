@@ -1,4 +1,9 @@
+const User = require('../models/user');
+const Category = require('../models/category');
 const Budget = require('../models/budget');
+const Bill = require('../models/bill');
+const Balance = require('../models/balance');
+const LineItem = require('../models/lineItem');
 
 module.exports = {
     index,

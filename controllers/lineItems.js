@@ -1,4 +1,5 @@
 const Balance = require('../models/balance');
+const LineItem = require('../models/lineItem');
 
 module.exports = {
     new: newItem

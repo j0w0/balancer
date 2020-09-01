@@ -1,4 +1,5 @@
 const Budget = require('../models/budget');
+const Bill = require('../models/bill');
 
 module.exports = {
     new: newBill,
@@ -15,21 +16,19 @@ function newBill(req, res) {
 }
 
 function create(req, res) {
-    Budget.findById(req.params.id, function(err, budget) {
-        budget.bills.push(req.body);
-        budget.save(err => {
-            if(err) res.render('bills/new', {
-                user: req.user,
-                budgetId: req.params.id
-            });
-            res.redirect(`/budgets/${req.params.id}`);
+    const budgetId = req.params.id;
+    req.body.budget = budgetId;
+    Bill.create(req.body, err => {
+        if(err) res.render('bills/new', {
+            user: req.user,
+            budgetId
         });
+        res.redirect(`/budgets/${budgetId}`);
     });
 }
 
 function show(req, res) {
-    Budget.findOne({'bills._id': req.params.id}, function(err, budget) {
-        const bill = budget.bills.find(bill => bill._id = req.params.id);
+    Bill.findById(req.params.id, function(err, bill) {
         res.render('bills/show', {
             user: req.user,
             bill
@@ -38,14 +37,14 @@ function show(req, res) {
 }
 
 function update(req, res) {
-    Budget.findOne({'bills._id': req.params.id}, function(err, budget) {
-        const billIdx = budget.bills.findIndex(bill => bill._id = req.params.id);
-        
-        req.body._id = req.params.id;
-        budget.bills[billIdx] = req.body;
-
-        budget.save(err => {
-            res.redirect(`/budgets/${budget.id}`);
-        });
+    Bill.findByIdAndUpdate(req.params.id, {
+        name: req.body.name,
+        dueDate: req.body.dueDate,
+        autoPay: req.body.autoPay,
+        autoPayAccount: req.body.autoPayAccount,
+        total: req.body.total,
+        url: req.body.url
+    }, function(err, bill) {
+        res.redirect(`/budgets/${bill.budget}`);
     });
 }

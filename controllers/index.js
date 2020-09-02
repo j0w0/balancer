@@ -22,17 +22,14 @@ function dashboard(req, res) {
     Budget.find({ user: req.user._id }, function(err, budgets) {
         Bill.find({ user: req.user.id, budget: budgets[0] }, function(err, bills) {
             Balance.find({ user: req.user._id }, function(err, balances) {
-
-                const newBalances = balances.map(balance => {
+                balances.forEach(balance => {
                     balance.dateFormatted = utilities.formatDate(balance.date);
-                    return balance;
                 });
-
                 res.render('dashboard', {
                     user: req.user,
                     budgets,
                     bills,
-                    balances: newBalances
+                    balances
                 });
             });
         });

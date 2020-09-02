@@ -1,3 +1,14 @@
+const monthNames = [
+    "January", "February", "March", "April",
+    "May", "June","July", "August",
+    "September", "October", "November", "December"
+];
+
+const weekNames = [
+    "Monday", "Tuesday", "Wednesday", "Thursday",
+    "Friday", "Saturday", "Sunday"
+];
+
 function addZero(i) {
     if(i < 10) {
         i = "0" + i;
@@ -6,13 +17,20 @@ function addZero(i) {
 }
 
 function formatDate(date) {
-    const d = new Date(date);
-    const month = addZero(d.getMonth() + 1);
-    const day = addZero(d.getDate());
-    const year = d.getFullYear();
-    return `${year}-${month}-${day}`;
+    const month = addZero(date.getMonth() + 1);
+    const day = addZero(date.getDate());
+    const year = date.getFullYear();
+    return `${month}-${day}-${year}`;
+}
+
+function formatDateLong(date) {
+    const month = monthNames[date.getMonth()];
+    const day = addZero(date.getDate());
+    const year = date.getFullYear();
+    return `${month} ${day}, ${year}`;
 }
 
 module.exports = {
-    formatDate
+    formatDate,
+    formatDateLong
 }

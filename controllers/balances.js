@@ -1,6 +1,7 @@
 const Balance = require('../models/balance');
 const LineItem = require('../models/lineItem');
 const utilities = require('../helpers/utilities');
+const Bill = require('../models/bill');
 
 module.exports = {
     index,
@@ -22,6 +23,7 @@ function newBalance(req, res) {
 
 function create(req, res) {
     req.body.user = req.user.id;
+    req.body.date = Date(req.body.date);
     Balance.create(req.body, err => {
         res.redirect('/dashboard');
     });
@@ -32,15 +34,10 @@ function show(req, res) {
         if(!balance) res.redirect('/dashboard');
         if(!req.user._id.equals(balance.user)) res.redirect(`/dashboard`);
         const balanceDate = utilities.formatDate(balance.date);
-        LineItem.find({}, (err, lineItems) => {
+        LineItem.find({ balance: balance.id }, (err, lineItems) => {
             let lineItemTotal = 0;
-
-            lineItems.forEach(item => {
-                lineItemTotal += item.paymentAmount;
-            });
-
+            lineItems.forEach(item => lineItemTotal += item.paymentAmount);
             const runningBalance = (balance.startingBalance - lineItemTotal).toFixed(2);
-
             res.render('balances/show', {
                 user: req.user,
                 balance,
@@ -48,7 +45,7 @@ function show(req, res) {
                 balanceDate,
                 runningBalance
             });
-        })
+        }).populate('bill');
     });
 }
 

@@ -6,24 +6,37 @@
 
     <label>
         Name<br />
-        <input type="text" name="name" required />
+        <input type="text" name="name" />
     </label>
 
     <br /><br />
 
+    <% if(bills.length > 0) { %>
+
     <label>
         Bill<br />
         <select name="bill">
-            <option selected disabled>-Select-</option>
-            <!-- loop through bills here -->
+            <option disabled selected>-Select-</option>
+            <% bills.forEach(bill => { %>
+            <option value="<%= bill.id %>"><%= bill.name %></option>
+            <% }); %>
         </select>
     </label>
 
     <br /><br />
 
+    <% } %>
+
     <label>
         Payment Amount<br />
         <input type="text" name="paymentAmount" />
+    </label>
+
+    <br /><br />
+
+    <label>
+        Notes<br />
+        <textarea name="notes"></textarea>
     </label>
 
     <br /><br />

@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const balanceSchema = Schema({
-    date: Date,
-    // dateFormatted: String,
+    date: {
+        type: Date,
+        default: Date.now
+    },
     notes: String,
     startingBalance: {
         type: Number,

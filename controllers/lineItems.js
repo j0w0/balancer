@@ -1,5 +1,6 @@
 const Balance = require('../models/balance');
 const LineItem = require('../models/lineItem');
+const Bill = require('../models/bill');
 
 module.exports = {
     index,
@@ -14,9 +15,12 @@ function index(req, res) {
 }
 
 function newItem(req, res) {
-    res.render('lineItems/new', {
-        user: req.user,
-        balanceId: req.params.id
+    Bill.find({ user: req.user.id }, function(err, bills) {
+        res.render('lineItems/new', {
+            user: req.user,
+            balanceId: req.params.id,
+            bills
+        });
     });
 }
 
@@ -38,20 +42,23 @@ function create(req, res) {
 function show(req, res) {
     LineItem.findById(req.params.id, function(err, lineItem) {
         if(!req.user._id.equals(lineItem.user)) res.redirect(`/dashboard`);
-        res.render('lineItems/show', {
-            user: req.user,
-            lineItem
+        Bill.find({ user: req.user.id }, function(err, bills) {
+            res.render('lineItems/show', {
+                user: req.user,
+                lineItem,
+                bills
+            });
         });
-    });
+    }).populate('bill');
 }
 
 function update(req, res) {
     LineItem.findById(req.params.id, function(err, lineItem) {
         if(!req.user || !req.user._id.equals(lineItem.user)) res.redirect(`/dashboard`);
         lineItem.name = req.body.name;
-        // delete lineItem.bill;
         lineItem.bill = req.body.bill;
         lineItem.paymentAmount = req.body.paymentAmount;
+        lineItem.notes = req.body.notes;
         lineItem.save(err => {
             res.redirect(`/balances/${lineItem.balance}`);
         });

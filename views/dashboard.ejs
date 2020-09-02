@@ -40,6 +40,7 @@ if(bills.length > 0) { %>
             <th>Due Date</th>
             <th align="right">Total</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -52,6 +53,8 @@ if(bills.length > 0) { %>
                 <% if(bill.url) { %>
                 <a href="<%= bill.url %>" target="_blank">Pay Bill</a>
                 <% } %>
+            </td>
+            <td>
                 <a href="/bills/<%= bill.id %>">Update</a>
             </td>
         </tr>
@@ -89,11 +92,28 @@ if(bills.length > 0) { %>
 
 <% if(balances.length > 0) { %>
 
-<% balances.forEach(balance => { %>
+<table>
+    <thead>
+        <tr align="left">
+            <th>Date</th>
+            <th>Starting</th>
+            <th>Ending</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% balances.forEach(balance => { %>
+        <tr>
+            <td><%= balance.dateFormatted %></td>
+            <td>$<%= balance.startingBalance %></td>
+            <td>$</td>
+            <td><a href="/balances/<%= balance.id %>">Manage</a></td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>
 
-<p><%= balance.dateFormatted %> <a href="/balances/<%= balance.id %>">Manage</a></p>
-
-<% }); %>
+<br />
 
 <% } else { %>
 

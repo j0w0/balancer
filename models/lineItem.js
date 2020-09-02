@@ -5,12 +5,13 @@ const lineItemSchema = Schema({
     name: String,
     bill: {
         type: Schema.Types.ObjectId,
-        ref: 'Budget'
+        ref: 'Bill'
     },
     paymentAmount: {
         type: Number,
         default: 0.00
     },
+    notes: String,
     category: {
         type: Schema.Types.ObjectId,
         ref: 'Category'

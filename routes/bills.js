@@ -5,6 +5,7 @@ const billsCtrl = require('../controllers/bills');
 
 // BILLS
 
+router.get('/', billsCtrl.index);
 router.get('/:id', isLoggedIn, billsCtrl.show);
 router.put('/:id', isLoggedIn, billsCtrl.update);
 

@@ -10,7 +10,7 @@ module.exports = {
 }
 
 function index(req, res) {
-    res.redirect('/dashboard');
+    res.redirect('/');
 }
 
 function newBudget(req, res) {
@@ -30,6 +30,7 @@ function create(req, res) {
 function show(req, res) {
     Budget.findById(req.params.id, function(err, budget) {
         if(!budget) res.redirect('/dashboard');
+        if(!req.user._id.equals(budget.user)) res.redirect(`/dashboard`);
         Bill.find({}, (err, bills) => {
             res.render('budgets/show', {
                 user: req.user,
@@ -42,10 +43,11 @@ function show(req, res) {
 
 function update(req, res) {
     Budget.findById(req.params.id, function(err, budget) {
-        budget.name = req.body.name;
+        if(!req.user._id.equals(budget.user)) res.redirect(`/dashboard`);
+        req.body.name === '' ? delete req.body.name : budget.name = req.body.name;
         budget.paySchedule = req.body.paySchedule;
-        budget.save((err) => {
-            res.redirect(`/budgets/${req.params.id}`);
+        budget.save(err => {
+            res.redirect(`/dashboard`);
         });
     });
 }

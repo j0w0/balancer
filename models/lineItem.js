@@ -18,6 +18,10 @@ const lineItemSchema = Schema({
     balance: {
         type: Schema.Types.ObjectId,
         ref: 'Balance'
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, {
     timestamps: true

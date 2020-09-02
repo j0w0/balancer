@@ -1,0 +1,36 @@
+<%- include('../partials/header') %>
+
+<h2><%= lineItem.name %></h2>
+
+<form action="/line-items/<%= lineItem.id %>?_method=PUT" method="POST">
+
+    <label>
+        Name<br />
+        <input type="text" name="name" value="<%= lineItem.name %>" />
+    </label>
+
+    <br /><br />
+
+    <label>
+        Bill<br />
+        <select name="bill">
+            <option selected disabled>-Select-</option>
+            loop through bills here
+        </select>
+    </label>
+
+    <br /><br />
+
+    <label>
+        Payment Amount<br />
+        <input type="text" name="paymentAmount" value="<%= lineItem.paymentAmount.toFixed(2) %>" />
+    </label>
+
+    <br /><br />
+
+    <button type="submit">Update</button>
+</form>
+
+<p><a href="/balances/<%= lineItem.balance %>">Go Back</a></p>
+
+<%- include('../partials/footer') %>

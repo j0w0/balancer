@@ -1,0 +1,76 @@
+<%- include('../partials/header'); %>
+
+<h2>Manage Balance</h2>
+
+<form action="/balances/<%= balance.id %>?_method=PUT" method="POST">
+
+    <label>
+        Date<br />
+        <input type="date" name="date" value="<%= balanceDate %>" />
+    </label>
+
+    <br /><br />
+
+    <label>
+        Starting Balance<br />
+        <input type="text" name="startingBalance" value="<%= balance.startingBalance.toFixed(2); %>" />
+    </label>
+
+    <br /><br />
+
+    <label>
+        Notes/comments<br />
+        <textarea name="notes"><%= balance.notes %></textarea>
+    </label>
+
+    <br /><br />
+
+    <button type="submit">Update</button>
+</form>
+
+<br />
+
+<h3>Line Items</h3>
+
+<%
+if(lineItems.length > 0) { %>
+
+<table>
+    <thead>
+        <tr align="left">
+            <th>Bill</th>
+            <th align="right">Amount</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% lineItems.forEach(item => { %>
+        <tr>
+            <td><%= item.name ? item.name : item.bill %></td>
+            <td align="right">$<%= item.paymentAmount.toFixed(2) %></td>
+            <td><a href="/line-items/<%= item.id %>">Update</a></td>
+        </tr>
+        <% }); %>
+
+        <tr>
+            <th align="left">Balance</th>
+            <td align="right">$<span id="running-balance"><%= runningBalance %></span></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<br />
+
+<%
+} else { %>
+
+<p>Add line items here to get started.</p>
+
+<%
+}
+%>
+
+<p><a href="/balances/<%= balance.id %>/line-items/new">Add Line Item</a></p>
+
+<%- include('../partials/footer') %>

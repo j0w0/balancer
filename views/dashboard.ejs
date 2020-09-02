@@ -4,23 +4,103 @@
 
 <p><%= `Welcome, ${user.firstName}!` %></p>
 
-<h3>Your Budgets</h3>
+<h3>Your Bills</h3>
 <%
+const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
+
 if(budgets.length > 0) {
     budgets.forEach(budget => { %>
 
-<p><%= budget.name %> (<%= budget.paySchedule %>) <a href="/budgets/<%= budget.id %>">Manage</a></p>
+<form action="/budgets/<%= budget.id %>?_method=PUT" method="POST">
+    <label>
+        Pay Schedule
+        <select name="paySchedule">
+            <%
+                paySchedules.forEach(schedule => { %>
+            <option value="<%= schedule %>" <% if(budget.paySchedule === schedule) { %> selected <% } %>>
+                <%= schedule %>
+            </option>
+            <%
+                });
+                %>
+        </select>
+    </label>
+    <button type="submit">Update</button>
+</form>
+
+<%
+if(bills.length > 0) { %>
+
+<br />
+
+<table>
+    <thead>
+        <tr align="left">
+            <th>Bill</th>
+            <th>Due Date</th>
+            <th align="right">Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% bills.forEach(bill => { %>
+        <tr>
+            <td><%= bill.name %></td>
+            <td><%= bill.dueDate %></td>
+            <td align="right">$<%= bill.total.toFixed(2) %></td>
+            <td>
+                <% if(bill.url) { %>
+                <a href="<%= bill.url %>" target="_blank">Pay Bill</a>
+                <% } %>
+                <a href="/bills/<%= bill.id %>">Update</a>
+            </td>
+        </tr>
+        <%
+            });
+            %>
+    </tbody>
+</table>
+
+<br />
+
+<%
+} else { %>
+
+<p>No bills yet. Add one to get started 🤘🏼</p>
+
+<%
+}
+%>
+
+<a href="/budgets/<%= budget.id %>/bills/new">Add a Bill</a>
 
 <%
     });
 } else { %>
 
 <p>Add a Budget to get this show on the road 🔥</p>
+<a href="/budgets/new">New Budget</a>
 
 <%
 }
 %>
 
-<a href="/budgets/new">New Budget</a>
+<h3>Balances</h3>
+
+<% if(balances.length > 0) { %>
+
+<% balances.forEach(balance => { %>
+
+<p><%= balance.dateFormatted %> <a href="/balances/<%= balance.id %>">Manage</a></p>
+
+<% }); %>
+
+<% } else { %>
+
+<p>Keep track of your balance while you pay bills.</p>
+
+<% } %>
+
+<a href="/balances/new">New Balance</a>
 
 <%- include('partials/footer') %>

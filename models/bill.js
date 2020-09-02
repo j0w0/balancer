@@ -27,7 +27,12 @@ const billSchema = Schema({
     budget: {
         type: Schema.Types.ObjectId,
         ref: 'Budget'
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
+    // add in pay schedule columns
 }, {
     timestamps: true
 });

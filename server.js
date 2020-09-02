@@ -48,7 +48,8 @@ app.use('/line-items', lineItemsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  //next(createError(404));
+  next(res.redirect('/'));
 });
 
 // error handler

@@ -2,10 +2,15 @@ const Budget = require('../models/budget');
 const Bill = require('../models/bill');
 
 module.exports = {
+    index,
     new: newBill,
     create,
     show,
     update
+}
+
+function index(req, res) {
+    res.redirect('/');
 }
 
 function newBill(req, res) {
@@ -16,19 +21,23 @@ function newBill(req, res) {
 }
 
 function create(req, res) {
-    const budgetId = req.params.id;
-    req.body.budget = budgetId;
-    Bill.create(req.body, err => {
-        if(err) res.render('bills/new', {
-            user: req.user,
-            budgetId
+    Budget.findById(req.params.id, function(err, budget) {
+        if(!req.user._id.equals(budget.user)) res.redirect(`/dashboard`);
+        req.body.budget = budget.id;
+        req.body.user = req.user.id;
+        Bill.create(req.body, err => {
+            if(err) res.render('bills/new', {
+                user: req.user,
+                budgetId: budget.id
+            });
+            res.redirect(`/dashboard`);
         });
-        res.redirect(`/budgets/${budgetId}`);
     });
 }
 
 function show(req, res) {
     Bill.findById(req.params.id, function(err, bill) {
+        if(!req.user._id.equals(bill.user)) res.redirect(`/dashboard`);
         res.render('bills/show', {
             user: req.user,
             bill
@@ -37,14 +46,16 @@ function show(req, res) {
 }
 
 function update(req, res) {
-    Bill.findByIdAndUpdate(req.params.id, {
-        name: req.body.name,
-        dueDate: req.body.dueDate,
-        autoPay: req.body.autoPay,
-        autoPayAccount: req.body.autoPayAccount,
-        total: req.body.total,
-        url: req.body.url
-    }, function(err, bill) {
-        res.redirect(`/budgets/${bill.budget}`);
+    Bill.findById(req.params.id, function(err, bill) {
+        if(!req.user._id.equals(bill.user)) res.redirect(`/dashboard`);
+        bill.name = req.body.name;
+        bill.dueDate = req.body.dueDate;
+        bill.autoPay = req.body.autoPay;
+        bill.autoPayAccount = req.body.autoPayAccount;
+        bill.total = req.body.total;
+        bill.url = req.body.url;
+        bill.save(err => {
+            res.redirect(`/dashboard`);
+        });
     });
 }

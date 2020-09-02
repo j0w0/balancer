@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const User = require('../models/user');
+const Budget = require('../models/budget');
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -27,7 +28,10 @@ passport.use(new GoogleStrategy({
             });
             newUser.save(err => {
                 if(err) return cb(err);
-                return cb(null, newUser);
+                const userId = newUser.id;
+                Budget.create({ user: userId }, err => {
+                    return cb(null, newUser);
+                });
             });
         }
     });

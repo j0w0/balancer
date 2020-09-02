@@ -1,0 +1,24 @@
+<%- include('../partials/header') %>
+
+<h2>New Balance</h2>
+
+<form action="/balances" method="POST">
+
+    <label>
+        Date<br />
+        <input type="date" name="date" />
+    </label>
+
+    <br /><br />
+
+    <label>
+        Notes/comments<br />
+        <textarea name="notes"></textarea>
+    </label>
+
+    <br /><br />
+
+    <button type="submit">Create</button>
+</form>
+
+<%- include('../partials/footer') %>

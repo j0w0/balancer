@@ -4,6 +4,7 @@ const Budget = require('../models/budget');
 const Bill = require('../models/bill');
 const Balance = require('../models/balance');
 const LineItem = require('../models/lineItem');
+const utilities = require('../helpers/utilities');
 
 module.exports = {
     index,
@@ -19,9 +20,21 @@ function index(req, res) {
 
 function dashboard(req, res) {
     Budget.find({ user: req.user._id }, function(err, budgets) {
-        res.render('dashboard', {
-            user: req.user,
-            budgets
+        Bill.find({ user: req.user.id, budget: budgets[0] }, function(err, bills) {
+            Balance.find({ user: req.user._id }, function(err, balances) {
+
+                const newBalances = balances.map(balance => {
+                    balance.dateFormatted = utilities.formatDate(balance.date);
+                    return balance;
+                });
+
+                res.render('dashboard', {
+                    user: req.user,
+                    budgets,
+                    bills,
+                    balances: newBalances
+                });
+            });
         });
     });
 }

@@ -31,17 +31,39 @@ const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
 <h3>Bills</h3>
 
 <%
-if(bills.length > 0) {
-    bills.forEach(bill => { %>
-<p>
-    <%= bill.name %> - $<%= bill.total.toFixed(2) %>
-    <% if(bill.url) { %>
-    <a href="<%= bill.url %>" target="_blank">Pay Bill</a>
-    <% } %>
-    <a href="/bills/<%= bill.id %>">Update</a>
-</p>
+if(bills.length > 0) { %>
+
+<table>
+    <thead>
+        <tr align="left">
+            <th>Bill</th>
+            <th>Due Date</th>
+            <th align="right">Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% bills.forEach(bill => { %>
+        <tr>
+            <td><%= bill.name %></td>
+            <td><%= bill.dueDate %></td>
+            <td align="right">$<%= bill.total.toFixed(2) %></td>
+            <td>
+                <% if(bill.url) { %>
+                <a href="<%= bill.url %>" target="_blank">Pay Bill</a>
+                <% } %>
+                <a href="/bills/<%= bill.id %>">Update</a>
+            </td>
+        </tr>
+        <%
+            });
+            %>
+    </tbody>
+</table>
+
+<br />
+
 <%
-    });
 } else { %>
 
 <p>No bills yet. Add one to get started 🤘🏼</p>

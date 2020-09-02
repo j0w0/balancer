@@ -1,0 +1,36 @@
+<%- include('../partials/header') %>
+
+<h2>New Line Item</h2>
+
+<form action="/balances/<%= balanceId %>/line-items" method="POST">
+
+    <label>
+        Name<br />
+        <input type="text" name="name" required />
+    </label>
+
+    <br /><br />
+
+    <label>
+        Bill<br />
+        <select name="bill">
+            <option selected disabled>-Select-</option>
+            <!-- loop through bills here -->
+        </select>
+    </label>
+
+    <br /><br />
+
+    <label>
+        Payment Amount<br />
+        <input type="text" name="paymentAmount" />
+    </label>
+
+    <br /><br />
+
+    <button type="submit">Add Line Item</button>
+</form>
+
+<p><a href="/balances/<%= balanceId %>">Go Back</a></p>
+
+<%- include('../partials/footer') %>

@@ -6,7 +6,8 @@ module.exports = {
     new: newBalance,
     create,
     show,
-    update
+    update,
+    delete: deleteBalance
 }
 
 function index(req, res) {
@@ -63,6 +64,17 @@ function update(req, res) {
 
         balance.save(err => {
             res.redirect(`/balances/${req.params.id}`);
+        });
+    });
+}
+
+function deleteBalance(req, res) {
+    const balanceId = req.params.id;
+    // remove balance and all ref'ed line items
+    Balance.findByIdAndRemove(balanceId, (err, balance) => {
+        if(!balance || !balance.user.equals(req.user._id) || err) return res.redirect(`/`);
+        LineItem.deleteMany({ balance: balanceId }, function(err, lineItems) {
+            res.redirect(`/dashboard`);
         });
     });
 }

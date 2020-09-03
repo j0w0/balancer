@@ -1,12 +1,14 @@
 const Budget = require('../models/budget');
 const Bill = require('../models/bill');
+const LineItem = require('../models/lineItem');
 
 module.exports = {
     index,
     new: newBill,
     create,
     show,
-    update
+    update,
+    delete: deleteBill
 }
 
 function index(req, res) {
@@ -96,6 +98,36 @@ function update(req, res) {
 
         bill.save(err => {
             res.redirect(`/dashboard`);
+        });
+    }).populate('budget');
+}
+
+function deleteBill(req, res) {
+    const billId = req.params.id;
+
+    // remove/delete and pass bill object down
+    Bill.findByIdAndRemove(billId, (err, bill) => {
+
+        const budgetId = bill.budget.id;
+
+        // find parent
+        Budget.findById(budgetId, function(err, budget) {
+
+            // remove bill ref from budget (parent)
+            budget.bills.remove(billId);
+            budget.save(err => {
+
+                // remove bill ref on any line item
+                LineItem.updateMany({ bill: billId }, {
+                    bill: null
+                }, function(err, lineItems) {
+
+                    console.log(lineItems);
+                
+                    // now delete bill
+                    res.redirect(`/dashboard`);
+                });
+            });
         });
     }).populate('budget');
 }

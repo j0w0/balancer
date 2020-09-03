@@ -71,6 +71,7 @@ if(budget.bills.length > 0) { %>
 
             <th></th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -115,6 +116,11 @@ if(budget.bills.length > 0) { %>
             </td>
             <td>
                 <a href="/bills/<%= bill.id %>">Update</a>
+            </td>
+            <td>
+                <form action="/bills/<%= bill.id %>?_method=DELETE" method="POST" autocomplete="off">
+                    <button type="submit">Delete</button>
+                </form>
             </td>
         </tr>
         <%

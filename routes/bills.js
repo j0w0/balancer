@@ -8,6 +8,7 @@ const billsCtrl = require('../controllers/bills');
 router.get('/', isLoggedIn, billsCtrl.index);
 router.get('/:id', isLoggedIn, billsCtrl.show);
 router.put('/:id', isLoggedIn, billsCtrl.update);
+router.delete('/:id', isLoggedIn, billsCtrl.delete);
 
 function isLoggedIn(req, res, next) {
   if(req.isAuthenticated()) return next();

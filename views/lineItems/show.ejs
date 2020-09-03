@@ -23,26 +23,24 @@
         <br /><br />
     </div>
 
-    <% if(bills.length > 0) { %>
-
     <div id="bill-select" <% if(lineItem.transactionType === 'Deposit') { %> style="display: none;" <% } %>>
         <label>
             Bill<br />
             <select name=" bill">
                 <option value="">-Select-</option>
+                <% if(bills.length > 0) { %>
                 <% bills.forEach(bill => { %>
                 <option value="<%= bill.id %>" <% if(lineItem.bill && lineItem.bill.id === bill.id) { %> selected
                     <% } %>>
                     <%= bill.name %>
                 </option>
                 <% }); %>
+                <% } %>
             </select>
         </label>
 
         <br /><br />
     </div>
-
-    <% } %>
 
     <label>
         Transaction Amount<br />

@@ -7,7 +7,8 @@ module.exports = {
     new: newItem,
     create,
     show,
-    update
+    update,
+    delete: deleteItem
 }
 
 function index(req, res) {
@@ -77,6 +78,26 @@ function update(req, res) {
         
         lineItem.save(err => {
             res.redirect(`/balances/${lineItem.balance.id}`);
+        });
+    }).populate('balance');
+}
+
+function deleteItem(req, res) {
+    const lineItemId = req.params.id;
+
+    // remove line item, pass obj down
+    LineItem.findByIdAndRemove(lineItemId, (err, lineItem) => {
+        if(!lineItem || !lineItem.user.equals(req.user._id) || err) return res.redirect(`/`);
+        const balanceId = lineItem.balance.id;
+
+        // find parent
+        Balance.findById(balanceId, function(err, balance) {
+
+            // remove line item ref in balance (parent)
+            balance.lineItems.remove(lineItemId);
+            balance.save(err => {
+                res.redirect(`/balances/${balanceId}`);
+            });
         });
     }).populate('balance');
 }

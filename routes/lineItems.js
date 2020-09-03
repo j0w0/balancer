@@ -8,6 +8,7 @@ const lineItemsCtrl = require('../controllers/lineItems');
 router.get('/', isLoggedIn, lineItemsCtrl.index);
 router.get('/:id', isLoggedIn, lineItemsCtrl.show);
 router.put('/:id', isLoggedIn, lineItemsCtrl.update);
+router.delete('/:id', isLoggedIn, lineItemsCtrl.delete);
 
 function isLoggedIn(req, res, next) {
   if(req.isAuthenticated()) return next();

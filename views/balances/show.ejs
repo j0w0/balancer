@@ -54,7 +54,11 @@ if(balance.lineItems.length > 0) { %>
                 $<% if(item.transactionType === 'Withdrawal') { %>-<% } %><%= item.transactionAmount.toFixed(2) %>
             </td>
             <td><a href="/line-items/<%= item.id %>">Update</a></td>
-            <td>delete form here</td>
+            <td>
+                <form action="/line-items/<%= item.id %>?_method=DELETE" method="POST" autocomplete="off">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
         </tr>
         <% }); %>
 

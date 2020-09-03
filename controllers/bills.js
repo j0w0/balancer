@@ -112,7 +112,7 @@ function deleteBill(req, res) {
 
         // find parent
         Budget.findById(budgetId, function(err, budget) {
-
+            
             // remove bill ref from budget (parent)
             budget.bills.remove(billId);
             budget.save(err => {

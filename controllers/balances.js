@@ -23,6 +23,7 @@ function newBalance(req, res) {
 function create(req, res) {
     req.body.user = req.user.id;
     req.body.date = Date(req.body.date);
+    if(req.body.startingBalance === '') delete req.body.startingBalance;
     Balance.create(req.body, err => {
         res.redirect('/dashboard');
     });

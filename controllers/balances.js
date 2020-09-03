@@ -32,11 +32,18 @@ function show(req, res) {
         if(!balance || !balance.user.equals(req.user._id) || err) return res.redirect(`/`);
 
         const balanceDate = balance.date.toISOString().slice(0,10);
-        
-        let lineItemTotal = 0;
-        balance.lineItems.forEach(item => lineItemTotal += item.paymentAmount);
 
-        const runningBalance = (balance.startingBalance - lineItemTotal).toFixed(2);
+        let runningBalance = balance.startingBalance;
+
+        balance.lineItems.forEach(item => {
+            if(item.transactionType === 'Withdrawal') {
+                runningBalance -= item.transactionAmount;
+            } else {
+                runningBalance += item.transactionAmount;
+            }
+        });
+
+        runningBalance = runningBalance.toFixed(2);
 
         res.render('balances/show', {
             balance,

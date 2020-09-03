@@ -5,12 +5,17 @@ const lineItemSchema = Schema({
     name: {
         type: String
     },
-    paymentAmount: {
+    transactionAmount: {
         type: Number,
         default: 0.00
     },
     notes: {
         type: String
+    },
+    transactionType: {
+        type: String,
+        enum: ['Deposit', 'Withdrawal'],
+        default: 'Withdrawal'
     },
     bill: {
         type: Schema.Types.ObjectId,

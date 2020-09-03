@@ -49,7 +49,9 @@ if(balance.lineItems.length > 0) { %>
         <tr>
             <td><%= item.name %></td>
             <td><%= item.bill ? item.bill.name : null %></td>
-            <td align="right">$<%= item.paymentAmount.toFixed(2) %></td>
+            <td align="right">
+                $<% if(item.transactionType === 'Withdrawal') { %>-<% } %><%= item.transactionAmount.toFixed(2) %>
+            </td>
             <td><a href="/line-items/<%= item.id %>">Update</a></td>
         </tr>
         <% }); %>

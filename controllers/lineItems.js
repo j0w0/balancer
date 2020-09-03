@@ -33,7 +33,7 @@ function create(req, res) {
         req.body.balance = balanceId;
         req.body.user = req.user.id;
 
-        if(req.body.paymentAmount === '') delete req.body.paymentAmount;
+        if(req.body.transactionAmount === '') delete req.body.transactionAmount;
 
         // create new line item
         const newLineItem = new LineItem(req.body);
@@ -70,9 +70,10 @@ function update(req, res) {
         if(!lineItem || !lineItem.user.equals(req.user._id) || err) return res.redirect(`/`);
 
         lineItem.name = req.body.name;
-        lineItem.paymentAmount = req.body.paymentAmount;
-        lineItem.notes = req.body.notes;
         lineItem.bill = req.body.bill === '' ? null : req.body.bill;
+        lineItem.transactionType = req.body.transactionType;
+        lineItem.transactionAmount = req.body.transactionAmount;
+        lineItem.notes = req.body.notes;
         
         lineItem.save(err => {
             res.redirect(`/balances/${lineItem.balance.id}`);

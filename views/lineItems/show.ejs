@@ -6,32 +6,47 @@
 
     <label>
         Name<br />
-        <input type="text" name="name" value="<%= lineItem.name %>" />
+        <input type="text" name="name" value="<%= lineItem.name %>" required />
     </label>
 
     <br /><br />
+
+    <div id="transactionType-radios">
+        <label>Transaction Type</label><br />
+
+        <label><input type="radio" name="transactionType" value="Withdrawal"
+                <% if(lineItem.transactionType === 'Withdrawal') { %> checked <% } %>> Withdrawal</label>
+
+        <label><input type="radio" name="transactionType" value="Deposit"
+                <% if(lineItem.transactionType === 'Deposit') { %> checked <% } %>> Deposit</label>
+
+        <br /><br />
+    </div>
 
     <% if(bills.length > 0) { %>
 
-    <label>
-        Bill<br />
-        <select name="bill">
-            <option value="">-Select-</option>
-            <% bills.forEach(bill => { %>
-            <option value="<%= bill.id %>" <% if(lineItem.bill && lineItem.bill.id === bill.id) { %> selected <% } %>>
-                <%= bill.name %>
-            </option>
-            <% }); %>
-        </select>
-    </label>
+    <div id="bill-select" <% if(lineItem.transactionType === 'Deposit') { %> style="display: none;" <% } %>>
+        <label>
+            Bill<br />
+            <select name=" bill">
+                <option value="">-Select-</option>
+                <% bills.forEach(bill => { %>
+                <option value="<%= bill.id %>" <% if(lineItem.bill && lineItem.bill.id === bill.id) { %> selected
+                    <% } %>>
+                    <%= bill.name %>
+                </option>
+                <% }); %>
+            </select>
+        </label>
 
-    <br /><br />
+        <br /><br />
+    </div>
 
     <% } %>
 
     <label>
-        Payment Amount<br />
-        <input type="text" name="paymentAmount" value="<%= lineItem.paymentAmount.toFixed(2) %>" />
+        Transaction Amount<br />
+        <input type="text" name="transactionAmount" value="<%= lineItem.transactionAmount.toFixed(2) %>" required />
     </label>
 
     <br /><br />

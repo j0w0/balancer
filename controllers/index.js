@@ -23,13 +23,16 @@ function dashboard(req, res) {
             balances.forEach((balance, idx) => {
                 balance.dateFormatted = utilities.formatDate(balance.date);
 
-                let lineItemTotal = 0;
+                let runningBalance = balance.startingBalance;
                 
-                balance.lineItems.forEach(lineItem => {
-                    lineItemTotal += lineItem.paymentAmount;
+                balance.lineItems.forEach(item => {
+                    if(item.transactionType === 'Withdrawal') {
+                        runningBalance -= item.transactionAmount;
+                    } else {
+                        runningBalance += item.transactionAmount;
+                    }
                 });
-
-                const runningBalance = balance.startingBalance - lineItemTotal;
+                
                 balance.runningBalance = runningBalance.toFixed(2);
             });
 

@@ -30,7 +30,7 @@
 
 <br />
 
-<h3>Line Items</h3>
+<h3>Transactions</h3>
 
 <%
 if(balance.lineItems.length > 0) { %>
@@ -76,13 +76,13 @@ if(balance.lineItems.length > 0) { %>
 <%
 } else { %>
 
-<p>Add line items here to get started.</p>
+<p>No transactions yet. Add one below.</p>
 
 <%
 }
 %>
 
-<a href="/balances/<%= balance.id %>/line-items/new">Add Line Item</a>
+<a href="/balances/<%= balance.id %>/line-items/new">Add Transaction</a>
 
 <p><a href="/dashboard">Go Back</a></p>
 

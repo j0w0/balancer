@@ -16,12 +16,14 @@ function index(req, res) {
 }
 
 function newItem(req, res) {
-    Bill.find({ user: req.user.id }, function(err, bills) {
-        if(!bills || !bills[0].user.equals(req.user._id) || err) return res.redirect(`/`);
-
-        res.render('lineItems/new', {
-            balanceId: req.params.id,
-            bills
+    const balanceId = req.params.id;
+    Balance.findById(balanceId, function(err, balance) {
+        if(!balance || !balance.user.equals(req.user._id) || err) return res.redirect(`/`);
+        Bill.find({ user: req.user.id }, function(err, bills) {
+            res.render('lineItems/new', {
+                balanceId,
+                bills
+            });
         });
     });
 }
@@ -71,11 +73,14 @@ function update(req, res) {
         if(!lineItem || !lineItem.user.equals(req.user._id) || err) return res.redirect(`/`);
 
         lineItem.name = req.body.name;
-        lineItem.bill = req.body.bill === '' ? null : req.body.bill;
         lineItem.transactionType = req.body.transactionType;
         lineItem.transactionAmount = req.body.transactionAmount;
         lineItem.notes = req.body.notes;
-        
+
+        lineItem.bill = req.body.bill === '' ||
+            req.body.transactionType === "Deposit" ?
+            null : req.body.bill;
+
         lineItem.save(err => {
             res.redirect(`/balances/${lineItem.balance.id}`);
         });

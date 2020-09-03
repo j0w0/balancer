@@ -1,6 +1,6 @@
 <%- include('../partials/header') %>
 
-<h2>New Line Item</h2>
+<h2>New Transaction</h2>
 
 <form action="/balances/<%= balanceId %>/line-items" method="POST" autocomplete="off">
 
@@ -25,7 +25,7 @@
         <label>
             Bill<br />
             <select name="bill">
-                <option disabled selected>-Select-</option>
+                <option disabled selected>None</option>
                 <% bills.forEach(bill => { %>
                 <option value="<%= bill.id %>"><%= bill.name %></option>
                 <% }); %>

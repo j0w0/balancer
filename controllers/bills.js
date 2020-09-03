@@ -74,37 +74,25 @@ function update(req, res) {
         bill.total = req.body.total;
         bill.url = req.body.url;
 
-        const arr = [0,1,2,3];
-        const installments = [];
         const paySchedule = bill.budget.paySchedule;
-
-        // get original values to persist
-        const inst0 = bill.installments[0];
-        const inst1 = bill.installments[1];
-        const inst2 = bill.installments[2];
-        const inst3 = bill.installments[3];
 
         if(paySchedule === "Monthly") {
             // update 0 // keep 1,2,3
-            installments[0] = req.body[`installments[0]`]
-            installments[1] = inst1;
-            installments[2] = inst2;
-            installments[3] = inst3;
+            bill.installments.set(0,req.body[`installments[0]`]);
+
         } else if(paySchedule === "Bi-Weekly" || paySchedule === "Semi-Monthly") {
             // update 0,1 // keep 2,3
-            installments[0] = req.body[`installments[0]`];
-            installments[1] = req.body[`installments[1]`];
-            installments[2] = inst2;
-            installments[3] = inst3;
+            bill.installments.set(0,req.body[`installments[0]`]);
+            bill.installments.set(1,req.body[`installments[1]`]);
+
         } else if(paySchedule === "Weekly") {
-            // update 0,1,2,3 (all)
-            arr.forEach(idx => {
+            // update all
+            bill.installments.forEach((i, idx) => {
                 const inst = req.body[`installments[${idx}]`];
-                inst ? installments.push(parseFloat(inst).toFixed(2)) : installments.push(parseFloat(0).toFixed(2));
+                const newVal = inst ? parseFloat(inst).toFixed(2) : parseFloat(0).toFixed(2);
+                bill.installments.set(idx,newVal);
             });
         }
-
-        bill.installments = installments;
 
         bill.save(err => {
             res.redirect(`/dashboard`);

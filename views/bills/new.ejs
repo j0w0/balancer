@@ -2,17 +2,17 @@
 
 <h2>New Bill</h2>
 
-<form action="/budgets/<%= budgetId %>/bills" method="POST">
+<form action="/budgets/<%= budget.id %>/bills" method="POST">
 
     <label>
-        Name
+        Name<br />
         <input type="text" name="name" required />
     </label>
 
     <br /><br />
 
     <label>
-        Due Date (1-31)
+        Due Date (1-31)<br />
         <input type="text" name="dueDate" pattern="0*([1-9]|[12][0-9]|3[01])" required />
     </label>
 
@@ -25,22 +25,71 @@
     <br /><br />
 
     <label>
-        Auto-Pay Account
+        Auto-Pay Account<br />
         <input type="text" name="autoPayAccount" />
     </label>
 
     <br /><br />
 
     <label>
-        Total
+        Total<br />
         <input type="text" name="total" pattern="^\$?([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(\.[0-9][0-9])?$"
             required />
     </label>
 
     <br /><br />
 
+    <% if(budget.paySchedule === "Weekly" ||
+        budget.paySchedule === "Bi-Weekly" ||
+        budget.paySchedule === "Semi-Monthly" ||
+        budget.paySchedule === "Monthly") { %>
+
     <label>
-        Bill Pay Website
+        Payment One<br />
+        <input type="text" name="installments[0]" />
+    </label>
+
+    <br /><br />
+
+    <%
+    }
+
+    if(budget.paySchedule === "Weekly" ||
+        budget.paySchedule === "Bi-Weekly" ||
+        budget.paySchedule === "Semi-Monthly") { %>
+
+    <label>
+        Payment Two<br />
+        <input type="text" name="installments[1]" />
+    </label>
+
+    <br /><br />
+
+    <%
+    }
+
+    if(budget.paySchedule === "Weekly") { %>
+
+    <label>
+        Payment Three<br />
+        <input type="text" name="installments[2]" />
+    </label>
+
+    <br /><br />
+
+    <label>
+        Payment Four<br />
+        <input type="text" name="installments[3]" />
+    </label>
+
+    <br /><br />
+
+    <%
+    }
+    %>
+
+    <label>
+        Bill Pay Website<br />
         <input type="text" name="url" />
     </label>
 

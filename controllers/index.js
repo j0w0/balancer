@@ -20,10 +20,19 @@ function dashboard(req, res) {
     Budget.find({ user: req.user._id }, function(err, budgets) {
         Balance.find({ user: req.user._id }, function(err, balances) {
 
-            balances.forEach(balance => {
+            balances.forEach((balance, idx) => {
                 balance.dateFormatted = utilities.formatDate(balance.date);
+
+                let lineItemTotal = 0;
+                
+                balance.lineItems.forEach(lineItem => {
+                    lineItemTotal += lineItem.paymentAmount;
+                });
+
+                const runningBalance = balance.startingBalance - lineItemTotal;
+                balance.runningBalance = runningBalance.toFixed(2);
             });
-            
+
             res.render('dashboard', {
                 budgets,
                 balances

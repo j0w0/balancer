@@ -16,10 +16,7 @@ function index(req, res) {
 function newBill(req, res) {
     Budget.findById(req.params.id, (err, budget) => {
         if(!budget || !budget.user.equals(req.user._id) || err) return res.redirect(`/`);
-
-        res.render('bills/new', {
-            budgetId: req.params.id
-        });
+        res.render('bills/new', { budget });
     });
 }
 
@@ -27,10 +24,22 @@ function create(req, res) {
     Budget.findById(req.params.id, function(err, budget) {
         if(!budget || !budget.user.equals(req.user._id) || err) return res.redirect(`/`);
 
+        if(!req.body.autoPayAccount) delete req.body.autoPayAccount;
+
         const budgetId = budget.id;
         req.body.budget = budgetId;
         req.body.user = req.user.id;
 
+        const arr = [0,1,2,3];
+        const installments = [];
+        
+        arr.forEach(idx => {
+            const inst = req.body[`installments[${idx}]`];
+            inst ? installments.push(parseFloat(inst).toFixed(2)) : installments.push(parseFloat(0).toFixed(2));
+        });
+
+        req.body.installments = installments;
+        
         // create new bill to budget (parent)
         const newBill = new Bill(req.body);
 
@@ -65,8 +74,19 @@ function update(req, res) {
         bill.total = req.body.total;
         bill.url = req.body.url;
 
+        const arr = [0,1,2,3];
+        const installments = [];
+        const paySchedule = bill.budget.paySchedule;
+
+        arr.forEach(idx => {
+            const inst = req.body[`installments[${idx}]`];
+            inst ? installments.push(parseFloat(inst).toFixed(2)) : installments.push(parseFloat(0).toFixed(2));
+        });
+
+        bill.installments = installments;
+
         bill.save(err => {
             res.redirect(`/dashboard`);
         });
-    });
+    }).populate('budget');
 }

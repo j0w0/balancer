@@ -4,7 +4,7 @@
 
 <p><%= `Welcome, ${user.firstName}!` %></p>
 
-<h3>Your Bills</h3>
+<h3>Your Budget</h3>
 
 <%
 const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
@@ -40,6 +40,35 @@ if(budget.bills.length > 0) { %>
             <th>Bill</th>
             <th>Due Date</th>
             <th align="right">Total</th>
+
+            <% if(budget.paySchedule === "Weekly" ||
+                budget.paySchedule === "Bi-Weekly" ||
+                budget.paySchedule === "Semi-Monthly" ||
+                budget.paySchedule === "Monthly") { %>
+
+            <th align="right">One</th>
+
+            <%
+            }
+
+            if(budget.paySchedule === "Weekly" ||
+                budget.paySchedule === "Bi-Weekly" ||
+                budget.paySchedule === "Semi-Monthly") { %>
+
+            <th align="right">Two</th>
+
+            <%
+            }
+
+            if(budget.paySchedule === "Weekly") { %>
+
+            <th align="right">Three</th>
+            <th align="right">Four</th>
+
+            <%
+            }
+            %>
+
             <th></th>
             <th></th>
         </tr>
@@ -50,9 +79,38 @@ if(budget.bills.length > 0) { %>
             <td><%= bill.name %></td>
             <td><%= bill.dueDate %></td>
             <td align="right">$<%= bill.total.toFixed(2) %></td>
+
+            <% if(budget.paySchedule === "Weekly" ||
+                budget.paySchedule === "Bi-Weekly" ||
+                budget.paySchedule === "Semi-Monthly" ||
+                budget.paySchedule === "Monthly") { %>
+
+            <td align="right">$<%= !bill.installments[0] ? 0 : bill.installments[0] %></td>
+
+            <%
+            }
+
+            if(budget.paySchedule === "Weekly" ||
+                budget.paySchedule === "Bi-Weekly" ||
+                budget.paySchedule === "Semi-Monthly") { %>
+
+            <td align="right">$<%= !bill.installments[1] ? 0 : bill.installments[1] %></td>
+
+            <%
+            }
+
+            if(budget.paySchedule === "Weekly") { %>
+
+            <td align="right">$<%= !bill.installments[2] ? 0 : bill.installments[2] %></td>
+            <td align="right">$<%= !bill.installments[3] ? 0 : bill.installments[3] %></td>
+
+            <%
+            }
+            %>
+
             <td>
                 <% if(bill.url) { %>
-                <a href="<%= bill.url %>" target="_blank">Pay Bill</a>
+                <a href="<%= bill.url %>" target="_blank">Bill Pay Link</a>
                 <% } %>
             </td>
             <td>
@@ -107,7 +165,7 @@ if(budget.bills.length > 0) { %>
         <tr>
             <td><%= balance.dateFormatted %></td>
             <td align="right">$<%= balance.startingBalance.toFixed(2) %></td>
-            <td align="right">$<%=  %></td>
+            <td align="right">$<%= balance.runningBalance %></td>
             <td><a href="/balances/<%= balance.id %>">Manage</a></td>
         </tr>
         <% }); %>

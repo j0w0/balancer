@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const zeroDollars = parseFloat(0).toFixed(2);
+
 const billSchema = Schema({
     name: {
         type: String,
@@ -15,14 +17,20 @@ const billSchema = Schema({
         default: 0
     },
     autoPayAccount: {
-        type: String
+        type: String,
+        default: null
     },
     total: {
         type: Number,
         default: 0.00
     },
     url: {
-        type: String
+        type: String,
+        default: null
+    },
+    installments: {
+        type: Array,
+        //default: [zeroDollars,zeroDollars,zeroDollars,zeroDollars]
     },
     budget: {
         type: Schema.Types.ObjectId,

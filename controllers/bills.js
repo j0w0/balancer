@@ -107,7 +107,7 @@ function deleteBill(req, res) {
 
     // remove/delete and pass bill object down
     Bill.findByIdAndRemove(billId, (err, bill) => {
-
+        if(!bill || !bill.user.equals(req.user._id) || err) return res.redirect(`/`);
         const budgetId = bill.budget.id;
 
         // find parent
@@ -121,10 +121,6 @@ function deleteBill(req, res) {
                 LineItem.updateMany({ bill: billId }, {
                     bill: null
                 }, function(err, lineItems) {
-
-                    console.log(lineItems);
-                
-                    // now delete bill
                     res.redirect(`/dashboard`);
                 });
             });

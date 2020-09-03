@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const zeroDollars = parseFloat(0).toFixed(2);
-
 const billSchema = Schema({
     name: {
         type: String,
@@ -30,7 +28,7 @@ const billSchema = Schema({
     },
     installments: {
         type: Array,
-        //default: [zeroDollars,zeroDollars,zeroDollars,zeroDollars]
+        default: [0,0,0,0]
     },
     budget: {
         type: Schema.Types.ObjectId,
@@ -40,7 +38,6 @@ const billSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }
-    // add in pay schedule columns
 }, {
     timestamps: true
 });

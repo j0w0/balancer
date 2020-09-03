@@ -12,7 +12,7 @@ const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
 if(budgets.length > 0) {
     budgets.forEach(budget => { %>
 
-<form action="/budgets/<%= budget.id %>?_method=PUT" method="POST">
+<form action="/budgets/<%= budget.id %>?_method=PUT" method="POST" autocomplete="off">
     <label>
         Pay Schedule
         <select name="paySchedule">

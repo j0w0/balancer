@@ -20,7 +20,7 @@ function formatDate(date) {
     const month = addZero(date.getMonth() + 1);
     const day = addZero(date.getDate());
     const year = date.getFullYear();
-    return `${month}-${day}-${year}`;
+    return `${month}/${day}/${year}`;
 }
 
 function formatDateLong(date) {

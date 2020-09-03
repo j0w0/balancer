@@ -20,18 +20,18 @@ function index(req, res) {
 
 function dashboard(req, res) {
     Budget.find({ user: req.user._id }, function(err, budgets) {
-        Bill.find({ user: req.user.id, budget: budgets[0] }, function(err, bills) {
-            Balance.find({ user: req.user._id }, function(err, balances) {
-                balances.forEach(balance => {
-                    balance.dateFormatted = utilities.formatDate(balance.date);
-                });
-                res.render('dashboard', {
-                    user: req.user,
-                    budgets,
-                    bills,
-                    balances
-                });
+        Balance.find({ user: req.user._id }, function(err, balances) {
+
+            balances.forEach(balance => {
+                balance.dateFormatted = utilities.formatDate(balance.date);
             });
-        });
-    });
+            
+            res.render('dashboard', {
+                user: req.user,
+                budgets,
+                balances
+            });
+
+        }).populate('lineItems');
+    }).populate('bills');
 }

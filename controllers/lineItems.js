@@ -27,14 +27,26 @@ function newItem(req, res) {
 function create(req, res) {
     Balance.findById(req.params.id, function(err, balance) {
         if(!req.user._id.equals(balance.user)) res.redirect(`/dashboard`);
-        req.body.balance = balance.id;
+
+        const balanceId = balance.id;
+        req.body.balance = balanceId;
         req.body.user = req.user.id;
-        LineItem.create(req.body, err => {
-            if(err) res.render('line-items/new', {
-                user: req.user,
-                balanceId: balance.id
+
+        // create new line item
+        const newLineItem = new LineItem(req.body);
+
+        newLineItem.save(err => {
+
+            // add new line item to balance (parent)
+            balance.lineItems.push(newLineItem.id);
+
+            balance.save(err => {
+                if(err) res.render('line-items/new', {
+                    user: req.user,
+                    balanceId
+                });
+                res.redirect(`/balances/${balanceId}`);
             });
-            res.redirect(`/balances/${balance.id}`);
         });
     });
 }
@@ -42,6 +54,8 @@ function create(req, res) {
 function show(req, res) {
     LineItem.findById(req.params.id, function(err, lineItem) {
         if(!req.user._id.equals(lineItem.user)) res.redirect(`/dashboard`);
+        
+        // get all bills to show in dropdown
         Bill.find({ user: req.user.id }, function(err, bills) {
             res.render('lineItems/show', {
                 user: req.user,
@@ -54,13 +68,15 @@ function show(req, res) {
 
 function update(req, res) {
     LineItem.findById(req.params.id, function(err, lineItem) {
-        if(!req.user || !req.user._id.equals(lineItem.user)) res.redirect(`/dashboard`);
+        if(!req.user._id.equals(lineItem.user)) res.redirect(`/dashboard`);
+
         lineItem.name = req.body.name;
         lineItem.bill = req.body.bill;
         lineItem.paymentAmount = req.body.paymentAmount;
         lineItem.notes = req.body.notes;
+        
         lineItem.save(err => {
-            res.redirect(`/balances/${lineItem.balance}`);
+            res.redirect(`/balances/${lineItem.balance.id}`);
         });
-    });
+    }).populate('balance');
 }

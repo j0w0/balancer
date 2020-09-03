@@ -31,7 +31,7 @@ const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
 <h3>Bills</h3>
 
 <%
-if(bills.length > 0) { %>
+if(budget.bills.length > 0) { %>
 
 <table>
     <thead>
@@ -43,7 +43,7 @@ if(bills.length > 0) { %>
         </tr>
     </thead>
     <tbody>
-        <% bills.forEach(bill => { %>
+        <% budget.bills.forEach(bill => { %>
         <tr>
             <td><%= bill.name %></td>
             <td><%= bill.dueDate %></td>

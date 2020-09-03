@@ -11,10 +11,14 @@ const budgetSchema = Schema({
         enum: ['Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly'],
         default: 'Semi-Monthly'
     },
+    bills: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Bill'
+    }],
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
 }, {
     timestamps: true
 });

@@ -6,15 +6,21 @@ const balanceSchema = Schema({
         type: Date,
         default: Date.now
     },
-    notes: String,
+    notes: {
+        type: String
+    },
     startingBalance: {
         type: Number,
         default: 0.00
     },
+    lineItems: [{
+        type: Schema.Types.ObjectId,
+        ref: 'LineItem'
+    }],
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
 }, {
     timestamps: true
 });

@@ -14,15 +14,15 @@ const billSchema = Schema({
         type: Boolean,
         default: 0
     },
-    autoPayAccount: String,
+    autoPayAccount: {
+        type: String
+    },
     total: {
         type: Number,
         default: 0.00
     },
-    url: String,
-    category: {
-        type: Schema.Types.ObjectId,
-        ref: 'Category'
+    url: {
+        type: String
     },
     budget: {
         type: Schema.Types.ObjectId,

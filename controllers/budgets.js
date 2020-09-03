@@ -31,14 +31,11 @@ function show(req, res) {
     Budget.findById(req.params.id, function(err, budget) {
         if(!budget) res.redirect('/dashboard');
         if(!req.user._id.equals(budget.user)) res.redirect(`/dashboard`);
-        Bill.find({}, (err, bills) => {
-            res.render('budgets/show', {
-                user: req.user,
-                budget,
-                bills
-            });
-        })
-    });
+        res.render('budgets/show', {
+            user: req.user,
+            budget
+        });
+    }).populate('bills');
 }
 
 function update(req, res) {

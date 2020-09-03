@@ -33,7 +33,7 @@
 <h3>Line Items</h3>
 
 <%
-if(lineItems.length > 0) { %>
+if(balance.lineItems.length > 0) { %>
 
 <table>
     <thead>
@@ -45,7 +45,7 @@ if(lineItems.length > 0) { %>
         </tr>
     </thead>
     <tbody>
-        <% lineItems.forEach(item => { %>
+        <% balance.lineItems.forEach(item => { %>
         <tr>
             <td><%= item.name %></td>
             <td><%= item.bill ? item.bill.name : null %></td>

@@ -30,7 +30,7 @@ if(budgets.length > 0) {
 </form>
 
 <%
-if(bills.length > 0) { %>
+if(budget.bills.length > 0) { %>
 
 <br />
 
@@ -45,7 +45,7 @@ if(bills.length > 0) { %>
         </tr>
     </thead>
     <tbody>
-        <% bills.forEach(bill => { %>
+        <% budget.bills.forEach(bill => { %>
         <tr>
             <td><%= bill.name %></td>
             <td><%= bill.dueDate %></td>
@@ -106,8 +106,8 @@ if(bills.length > 0) { %>
         <% balances.forEach(balance => { %>
         <tr>
             <td><%= balance.dateFormatted %></td>
-            <td>$<%= balance.startingBalance %></td>
-            <td>$</td>
+            <td align="right">$<%= balance.startingBalance.toFixed(2) %></td>
+            <td align="right">$<%=  %></td>
             <td><a href="/balances/<%= balance.id %>">Manage</a></td>
         </tr>
         <% }); %>

@@ -18,7 +18,8 @@
         <select name="bill">
             <option value="">-Select-</option>
             <% bills.forEach(bill => { %>
-            <option value="<%= bill.id %>" <% if(lineItem.bill.equals(bill.id)) { %> selected <% } %>><%= bill.name %>
+            <option value="<%= bill.id %>" <% if(lineItem.bill && lineItem.bill.id === bill.id) { %> selected <% } %>>
+                <%= bill.name %>
             </option>
             <% }); %>
         </select>

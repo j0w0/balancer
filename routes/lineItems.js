@@ -5,7 +5,7 @@ const lineItemsCtrl = require('../controllers/lineItems');
 
 // LINE-ITEMS
 
-router.get('/', lineItemsCtrl.index);
+router.get('/', isLoggedIn, lineItemsCtrl.index);
 router.get('/:id', isLoggedIn, lineItemsCtrl.show);
 router.put('/:id', isLoggedIn, lineItemsCtrl.update);
 

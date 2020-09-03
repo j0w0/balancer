@@ -5,7 +5,7 @@ const billsCtrl = require('../controllers/bills');
 
 // BUDGETS
 
-router.get('/', budgetsCtrl.index);
+router.get('/', isLoggedIn, budgetsCtrl.index);
 router.get('/new', isLoggedIn, budgetsCtrl.new);
 router.post('/', isLoggedIn, budgetsCtrl.create);
 router.get('/:id', isLoggedIn, budgetsCtrl.show);

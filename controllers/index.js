@@ -13,9 +13,7 @@ module.exports = {
 
 function index(req, res) {    
     if(req.user) return res.redirect('/dashboard');
-    res.render('index', {
-        user: req.user
-    });
+    res.render('index', {});
 }
 
 function dashboard(req, res) {
@@ -27,11 +25,9 @@ function dashboard(req, res) {
             });
             
             res.render('dashboard', {
-                user: req.user,
                 budgets,
                 balances
             });
-
         }).populate('lineItems');
     }).populate('bills');
 }

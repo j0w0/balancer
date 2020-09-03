@@ -14,9 +14,7 @@ function index(req, res) {
 }
 
 function newBudget(req, res) {
-    res.render('budgets/new', {
-        user: req.user
-    });
+    res.render('budgets/new', {});
 }
 
 function create(req, res) {
@@ -29,18 +27,15 @@ function create(req, res) {
 
 function show(req, res) {
     Budget.findById(req.params.id, function(err, budget) {
-        if(!budget) res.redirect('/dashboard');
-        if(!req.user._id.equals(budget.user)) res.redirect(`/dashboard`);
-        res.render('budgets/show', {
-            user: req.user,
-            budget
-        });
+        if(!budget || !budget.user.equals(req.user._id) || err) return res.redirect(`/`);
+        res.render('budgets/show', { budget });
     }).populate('bills');
 }
 
 function update(req, res) {
     Budget.findById(req.params.id, function(err, budget) {
-        if(!req.user._id.equals(budget.user)) res.redirect(`/dashboard`);
+        if(!budget || !budget.user.equals(req.user._id) || err) return res.redirect(`/`);
+        
         req.body.name === '' ? delete req.body.name : budget.name = req.body.name;
         budget.paySchedule = req.body.paySchedule;
         budget.save(err => {

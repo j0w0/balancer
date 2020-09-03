@@ -14,15 +14,18 @@ function index(req, res) {
 }
 
 function newBill(req, res) {
-    res.render('bills/new', {
-        user: req.user,
-        budgetId: req.params.id
+    Budget.findById(req.params.id, (err, budget) => {
+        if(!budget || !budget.user.equals(req.user._id) || err) return res.redirect(`/`);
+
+        res.render('bills/new', {
+            budgetId: req.params.id
+        });
     });
 }
 
 function create(req, res) {
     Budget.findById(req.params.id, function(err, budget) {
-        if(!req.user._id.equals(budget.user)) res.redirect(`/dashboard`);
+        if(!budget || !budget.user.equals(req.user._id) || err) return res.redirect(`/`);
 
         const budgetId = budget.id;
         req.body.budget = budgetId;
@@ -37,10 +40,7 @@ function create(req, res) {
             budget.bills.push(newBill.id);
 
             budget.save(err => {
-                if(err) res.render('bills/new', {
-                    user: req.user,
-                    budgetId
-                });
+                if(err) res.render('bills/new', { budgetId });
                 res.redirect(`/dashboard`);
             });
         });
@@ -49,18 +49,14 @@ function create(req, res) {
 
 function show(req, res) {
     Bill.findById(req.params.id, function(err, bill) {
-        if(!req.user._id.equals(bill.user)) res.redirect(`/dashboard`);
-        
-        res.render('bills/show', {
-            user: req.user,
-            bill
-        });
+        if(!bill || !bill.user.equals(req.user._id) || err) return res.redirect(`/`);
+        res.render('bills/show', { bill });
     }).populate('budget');
 }
 
 function update(req, res) {
     Bill.findById(req.params.id, function(err, bill) {
-        if(!req.user._id.equals(bill.user)) res.redirect(`/dashboard`);
+        if(!bill || !bill.user.equals(req.user._id) || err) return res.redirect(`/`);
 
         bill.name = req.body.name;
         bill.dueDate = req.body.dueDate;

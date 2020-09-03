@@ -12,18 +12,19 @@ const lineItemSchema = Schema({
     notes: {
         type: String
     },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
     bill: {
         type: Schema.Types.ObjectId,
-        ref: 'Bill'
+        ref: 'Bill',
+        default: null
     },
     balance: {
         type: Schema.Types.ObjectId,
         ref: 'Balance'
-    }
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
 }, {
     timestamps: true
 });

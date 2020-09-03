@@ -16,8 +16,9 @@ function index(req, res) {
 
 function newItem(req, res) {
     Bill.find({ user: req.user.id }, function(err, bills) {
+        if(!bills || !bills[0].user.equals(req.user._id) || err) return res.redirect(`/`);
+
         res.render('lineItems/new', {
-            user: req.user,
             balanceId: req.params.id,
             bills
         });
@@ -26,11 +27,13 @@ function newItem(req, res) {
 
 function create(req, res) {
     Balance.findById(req.params.id, function(err, balance) {
-        if(!req.user._id.equals(balance.user)) res.redirect(`/dashboard`);
+        if(!balance || !balance.user.equals(req.user._id) || err) return res.redirect(`/`);
 
         const balanceId = balance.id;
         req.body.balance = balanceId;
         req.body.user = req.user.id;
+
+        if(req.body.paymentAmount === '') delete req.body.paymentAmount;
 
         // create new line item
         const newLineItem = new LineItem(req.body);
@@ -41,10 +44,7 @@ function create(req, res) {
             balance.lineItems.push(newLineItem.id);
 
             balance.save(err => {
-                if(err) res.render('line-items/new', {
-                    user: req.user,
-                    balanceId
-                });
+                if(err) res.render('line-items/new', { balanceId });
                 res.redirect(`/balances/${balanceId}`);
             });
         });
@@ -53,12 +53,11 @@ function create(req, res) {
 
 function show(req, res) {
     LineItem.findById(req.params.id, function(err, lineItem) {
-        if(!req.user._id.equals(lineItem.user)) res.redirect(`/dashboard`);
+        if(!lineItem || !lineItem.user.equals(req.user._id) || err) return res.redirect(`/`);
         
         // get all bills to show in dropdown
         Bill.find({ user: req.user.id }, function(err, bills) {
             res.render('lineItems/show', {
-                user: req.user,
                 lineItem,
                 bills
             });
@@ -68,12 +67,12 @@ function show(req, res) {
 
 function update(req, res) {
     LineItem.findById(req.params.id, function(err, lineItem) {
-        if(!req.user._id.equals(lineItem.user)) res.redirect(`/dashboard`);
+        if(!lineItem || !lineItem.user.equals(req.user._id) || err) return res.redirect(`/`);
 
         lineItem.name = req.body.name;
-        lineItem.bill = req.body.bill;
         lineItem.paymentAmount = req.body.paymentAmount;
         lineItem.notes = req.body.notes;
+        lineItem.bill = req.body.bill === '' ? null : req.body.bill;
         
         lineItem.save(err => {
             res.redirect(`/balances/${lineItem.balance.id}`);

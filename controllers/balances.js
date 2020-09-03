@@ -15,7 +15,6 @@ function index(req, res) {
 
 function newBalance(req, res) {
     res.render('balances/new', {
-        user: req.user,
         today: new Date().toISOString().slice(0,10)
     });
 }
@@ -23,7 +22,6 @@ function newBalance(req, res) {
 function create(req, res) {
     req.body.user = req.user.id;
     req.body.date = Date(req.body.date);
-    
     Balance.create(req.body, err => {
         res.redirect('/dashboard');
     });
@@ -31,8 +29,7 @@ function create(req, res) {
 
 function show(req, res) {
     Balance.findById(req.params.id, function(err, balance) {
-        if(!balance) res.redirect('/dashboard');
-        if(!req.user._id.equals(balance.user)) res.redirect(`/dashboard`);
+        if(!balance || !balance.user.equals(req.user._id) || err) return res.redirect(`/`);
 
         const balanceDate = balance.date.toISOString().slice(0,10);
         
@@ -42,7 +39,6 @@ function show(req, res) {
         const runningBalance = (balance.startingBalance - lineItemTotal).toFixed(2);
 
         res.render('balances/show', {
-            user: req.user,
             balance,
             balanceDate,
             runningBalance
@@ -52,7 +48,7 @@ function show(req, res) {
 
 function update(req, res) {
     Balance.findById(req.params.id, function(err, balance) {
-        if(!req.user._id.equals(balance.user)) res.redirect(`/dashboard`);
+        if(!balance || !balance.user.equals(req.user._id) || err) return res.redirect(`/`);
 
         balance.date = Date(req.body.date);
         balance.startingBalance = req.body.startingBalance;

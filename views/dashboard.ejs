@@ -1,10 +1,9 @@
 <%- include('partials/header') %>
 
-<h2>Dashboard</h2>
-
-<p><%= `Hey, ${user.firstName}` %> 👋🏼</p>
-
-<hr />
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">Dashboard</h2>
+    <p class="mb-0"><%= `Hey, ${user.firstName}` %> <%= randomEmoji %></p>
+</div>
 
 <div class="row align-items-center mb-2">
     <div class="col-sm-3 col-md-6 col-lg-7 col-xl-8">
@@ -149,13 +148,11 @@ budgets.forEach(budget => {
 
 <% } %>
 
-<a href="/budgets/<%= budget.id %>/bills/new">Add a Bill</a>
+<p><a href="/budgets/<%= budget.id %>/bills/new">Add a Bill</a></p>
 
 <%
 });
 %>
-
-<hr />
 
 <h4>Balance Tracker</h4>
 
@@ -197,6 +194,6 @@ budgets.forEach(budget => {
 
 <% } %>
 
-<a href="/balances/new">New Log</a>
+<p><a href="/balances/new">New Log</a></p>
 
 <%- include('partials/footer') %>

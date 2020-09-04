@@ -36,9 +36,16 @@ function dashboard(req, res) {
                 balance.runningBalance = runningBalance.toFixed(2);
             });
 
+            const emojis = [
+                '🔥','👋🏼','😎', '🤖', '🥳', '🤘🏼'
+            ];
+
+            const random = Math.floor(Math.random() * emojis.length);
+
             res.render('dashboard', {
                 budgets,
-                balances
+                balances,
+                randomEmoji: emojis[random]
             });
         }).populate('lineItems');
     }).populate('bills');

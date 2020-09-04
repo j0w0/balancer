@@ -22,7 +22,7 @@ function newBalance(req, res) {
 
 function create(req, res) {
     req.body.user = req.user.id;
-    req.body.date = Date(req.body.date);
+    req.body.date = new Date(req.body.date).toISOString().slice(0,16);
     if(req.body.startingBalance === '') delete req.body.startingBalance;
     Balance.create(req.body, err => {
         res.redirect('/dashboard');
@@ -63,7 +63,7 @@ function update(req, res) {
     Balance.findById(req.params.id, function(err, balance) {
         if(!balance || !balance.user.equals(req.user._id) || err) return res.redirect(`/`);
 
-        balance.date = Date(req.body.date);
+        balance.date = new Date(req.body.date).toISOString().slice(0,16);
         balance.startingBalance = req.body.startingBalance;
         balance.notes = req.body.notes;
 

@@ -33,25 +33,29 @@ function show(req, res) {
     Balance.findById(req.params.id, function(err, balance) {
         if(!balance || !balance.user.equals(req.user._id) || err) return res.redirect(`/`);
 
-        const balanceDate = balance.date.toISOString().slice(0,10);
+        LineItem.find({ balance: req.params.id }, function(err, lineItems) {
 
-        let runningBalance = balance.startingBalance;
+            const balanceDate = balance.date.toISOString().slice(0,10);
 
-        balance.lineItems.forEach(item => {
-            if(item.transactionType === 'Withdrawal') {
-                runningBalance -= item.transactionAmount;
-            } else {
-                runningBalance += item.transactionAmount;
-            }
-        });
+            let runningBalance = balance.startingBalance;
 
-        runningBalance = runningBalance.toFixed(2);
+            balance.lineItems.forEach(item => {
+                if(item.transactionType === 'Withdrawal') {
+                    runningBalance -= item.transactionAmount;
+                } else {
+                    runningBalance += item.transactionAmount;
+                }
+            });
 
-        res.render('balances/show', {
-            balance,
-            balanceDate,
-            runningBalance
-        });
+            runningBalance = runningBalance.toFixed(2);
+
+            res.render('balances/show', {
+                balance,
+                balanceDate,
+                runningBalance,
+                lineItems
+            });
+        }).populate('bill');
     }).populate('lineItems');
 }
 

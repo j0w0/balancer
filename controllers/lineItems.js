@@ -29,6 +29,8 @@ function newItem(req, res) {
 }
 
 function create(req, res) {
+    console.log(req.body);
+
     Balance.findById(req.params.id, function(err, balance) {
         if(!balance || !balance.user.equals(req.user._id) || err) return res.redirect(`/`);
 
@@ -36,7 +38,8 @@ function create(req, res) {
         req.body.balance = balanceId;
         req.body.user = req.user.id;
 
-        if(req.body.transactionAmount === '') delete req.body.transactionAmount;
+        // if(req.body.transactionAmount === '') delete req.body.transactionAmount;
+        if(req.body.bill === '') delete req.body.bill;
 
         // create new line item
         const newLineItem = new LineItem(req.body);

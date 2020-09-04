@@ -25,7 +25,7 @@
 <h4>Transactions</h4>
 
 <%
-if(balance.lineItems.length > 0) { %>
+if(lineItems.length > 0) { %>
 
 <div class="table-responsive">
     <table class="table table-hover table-bordered">
@@ -40,7 +40,7 @@ if(balance.lineItems.length > 0) { %>
             </tr>
         </thead>
         <tbody>
-            <% balance.lineItems.forEach(item => { %>
+            <% lineItems.forEach(item => { %>
             <tr>
                 <td><%= item.name %></td>
                 <td><%= item.bill ? item.bill.name : null %></td>

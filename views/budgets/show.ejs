@@ -1,77 +1,69 @@
 <%- include('../partials/header'); %>
-
-<%
-const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
-%>
+<% const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ]; %>
 
 <h2>Manage <%= budget.name %> Budget</h2>
 
 <form action="/budgets/<%= budget.id %>?_method=PUT" method="POST" autocomplete="off">
-    <label>
-        Name <input type="text" name="name" value="<%= budget.name %>" />
-    </label>
-    <label>
-        Pay Schedule
-        <select name="paySchedule">
-            <%
-            paySchedules.forEach(schedule => { %>
-            <option value="<%= schedule %>" <% if(budget.paySchedule === schedule) { %> selected <% } %>>
-                <%= schedule %>
-            </option>
-            <%
-            });
-            %>
-        </select>
-    </label>
-    <button type="submit">Update</button>
-</form>
 
-<br />
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="form-control" value="<%= budget.name %>" />
+    </div>
+
+    <div class="form-group">
+        <label class="d-block">Pay Schedule</label>
+        <% paySchedules.forEach(schedule => { %>
+        <div class="form-check form-check-inline">
+            <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="paySchedule" value="<%= schedule %>"
+                    <% if(budget.paySchedule === schedule) { %> checked <% } %>>
+                <%= schedule %>
+            </label>
+        </div>
+        <% }); %>
+    </div>
+
+    <button type="submit" class="btn btn-primary mb-3">Update</button>
+</form>
 
 <h3>Bills</h3>
 
-<%
-if(budget.bills.length > 0) { %>
+<% if(budget.bills.length > 0) { %>
 
-<table>
-    <thead>
-        <tr align="left">
-            <th>Bill</th>
-            <th>Due Date</th>
-            <th align="right">Total</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <% budget.bills.forEach(bill => { %>
-        <tr>
-            <td><%= bill.name %></td>
-            <td><%= bill.dueDate %></td>
-            <td align="right">$<%= bill.total.toFixed(2) %></td>
-            <td>
-                <% if(bill.url) { %>
-                <a href="<%= bill.url %>" target="_blank">Pay Bill</a>
-                <% } %>
-                <a href="/bills/<%= bill.id %>">Update</a>
-            </td>
-        </tr>
-        <%
-            });
-            %>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-light">
+            <tr class="text-left">
+                <th>Bill</th>
+                <th>Due Date</th>
+                <th class="text-right">Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% budget.bills.forEach(bill => { %>
+            <tr>
+                <td><%= bill.name %></td>
+                <td><%= bill.dueDate %></td>
+                <td class="text-right">$<%= bill.total.toFixed(2) %></td>
+                <td>
+                    <% if(bill.url) { %>
+                    <a href="<%= bill.url %>" target="_blank">Pay Bill</a>
+                    <% } %>
+                    <a href="/bills/<%= bill.id %>">Update</a>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
 
-<br />
+<% } else { %>
 
-<%
-} else { %>
+<p>No bills yet. Add one to get started.</p>
 
-<p>No bills yet. Add one to get started 🤘🏼</p>
+<% } %>
 
-<%
-}
-%>
-
-<a href="/budgets/<%= budget.id %>/bills/new">Add a Bill</a>
+<p><a href="/budgets/<%= budget.id %>/bills/new">Add Bill</a></p>
 
 <%- include('../partials/footer') %>

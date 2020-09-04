@@ -1,77 +1,70 @@
 <%- include('../partials/header'); %>
 
-<h2>Manage Balance</h2>
+<h2>Manage Balance Log</h2>
 
 <form action="/balances/<%= balance.id %>?_method=PUT" method="POST" autocomplete="off">
 
-    <label>
-        Date<br />
-        <input type="date" name="date" value="<%= balanceDate %>" />
-    </label>
+    <div class="form-group">
+        <input type="date" name="date" class="form-control" value="<%= balanceDate %>" required />
+    </div>
 
-    <br /><br />
+    <div class="form-group">
+        <label for="startingBalance">Starting Balance</label>
+        <input type="text" name="startingBalance" id="startingBalance" class="form-control"
+            value="<%= balance.startingBalance.toFixed(2); %>" required />
+    </div>
 
-    <label>
-        Starting Balance<br />
-        <input type="text" name="startingBalance" value="<%= balance.startingBalance.toFixed(2); %>" />
-    </label>
+    <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes" class="form-control"><%= balance.notes %></textarea>
+    </div>
 
-    <br /><br />
-
-    <label>
-        Notes<br />
-        <textarea name="notes"><%= balance.notes %></textarea>
-    </label>
-
-    <br /><br />
-
-    <button type="submit">Update</button>
+    <button type="submit" class="btn btn-primary mb-3">Update</button>
 </form>
 
-<br />
-
-<h3>Transactions</h3>
+<h4>Transactions</h4>
 
 <%
 if(balance.lineItems.length > 0) { %>
 
-<table>
-    <thead>
-        <tr align="left">
-            <th>Item</th>
-            <th>Bill</th>
-            <th align="right">Amount</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <% balance.lineItems.forEach(item => { %>
-        <tr>
-            <td><%= item.name %></td>
-            <td><%= item.bill ? item.bill.name : null %></td>
-            <td align="right">
-                $<% if(item.transactionType === 'Withdrawal') { %>-<% } %><%= item.transactionAmount.toFixed(2) %>
-            </td>
-            <td><a href="/line-items/<%= item.id %>">Update</a></td>
-            <td>
-                <form action="/line-items/<%= item.id %>?_method=DELETE" method="POST" autocomplete="off">
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
-        <% }); %>
+<div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-light">
+            <tr class="text-left">
+                <th>Item</th>
+                <th>Bill</th>
+                <th class="text-right">Amount</th>
+                <th>Notes</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% balance.lineItems.forEach(item => { %>
+            <tr>
+                <td><%= item.name %></td>
+                <td><%= item.bill ? item.bill.name : null %></td>
+                <td class="text-right <% if(item.transactionType === 'Withdrawal') { %> text-danger <% } %>">
+                    $<% if(item.transactionType === 'Withdrawal') { %>-<% } %><%= item.transactionAmount.toFixed(2) %>
+                </td>
+                <td><%= item.notes %></td>
+                <td><a href="/line-items/<%= item.id %>">Update</a></td>
+                <td>
+                    <form action="/line-items/<%= item.id %>?_method=DELETE" method="POST" autocomplete="off">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <% }); %>
 
-        <tr>
-            <th align="left" colspan="2">Balance</th>
-            <td align="right">$<span id="running-balance"><%= runningBalance %></span></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
-
-<br />
+            <tr>
+                <th colspan="2">Balance</th>
+                <td class="text-right">$<span id="running-balance"><%= runningBalance %></span></td>
+                <td colspan="3"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <%
 } else { %>
@@ -82,7 +75,7 @@ if(balance.lineItems.length > 0) { %>
 }
 %>
 
-<a href="/balances/<%= balance.id %>/line-items/new">Add Transaction</a>
+<p><a href="/balances/<%= balance.id %>/line-items/new">Add Transaction</a></p>
 
 <p><a href="/dashboard">Go Back</a></p>
 

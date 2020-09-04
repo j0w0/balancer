@@ -4,29 +4,31 @@
 
 <form action="/line-items/<%= lineItem.id %>?_method=PUT" method="POST" autocomplete="off">
 
-    <label>
-        Name<br />
-        <input type="text" name="name" value="<%= lineItem.name %>" required />
-    </label>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="form-control" required value="<%= lineItem.name %>" />
+    </div>
 
-    <br /><br />
-
-    <div id="transactionType-radios">
-        <label>Transaction Type</label><br />
-
-        <label><input type="radio" name="transactionType" value="Withdrawal"
-                <% if(lineItem.transactionType === 'Withdrawal') { %> checked <% } %>> Withdrawal</label>
-
-        <label><input type="radio" name="transactionType" value="Deposit"
-                <% if(lineItem.transactionType === 'Deposit') { %> checked <% } %>> Deposit</label>
-
-        <br /><br />
+    <div id="transactionType-radios" class="form-group">
+        <label class="d-block">Transaction Type</label>
+        <div class="form-check form-check-inline">
+            <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="transactionType" value="Withdrawal"
+                    <% if(lineItem.transactionType === 'Withdrawal') { %> checked <% } %>> Withdrawal
+            </label>
+        </div>
+        <div class="form-check form-check-inline">
+            <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="transactionType" value="Deposit"
+                    <% if(lineItem.transactionType === 'Deposit') { %> checked <% } %>> Deposit
+            </label>
+        </div>
     </div>
 
     <div id="bill-select" <% if(lineItem.transactionType === 'Deposit') { %> style="display: none;" <% } %>>
-        <label>
-            Bill<br />
-            <select name="bill">
+        <div class="form-group">
+            <label for="bill">Bill</label>
+            <select name="bill" id="bill" class="custom-select">
                 <option value="">None</option>
                 <% if(bills.length > 0) { %>
                 <% bills.forEach(bill => { %>
@@ -37,26 +39,21 @@
                 <% }); %>
                 <% } %>
             </select>
-        </label>
-
-        <br /><br />
+        </div>
     </div>
 
-    <label>
-        Transaction Amount<br />
-        <input type="text" name="transactionAmount" value="<%= lineItem.transactionAmount.toFixed(2) %>" required />
-    </label>
+    <div class="form-group">
+        <label for="transactionAmount">Transaction Amount</label>
+        <input type="text" name="transactionAmount" id="transactionAmount" class="form-control" required
+            value="<%= lineItem.transactionAmount.toFixed(2) %>" />
+    </div>
 
-    <br /><br />
+    <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes" class="form-control"><%= lineItem.notes %></textarea>
+    </div>
 
-    <label>
-        Notes<br />
-        <textarea name="notes"><%= lineItem.notes %></textarea>
-    </label>
-
-    <br /><br />
-
-    <button type="submit">Update</button>
+    <button type="submit" class="btn btn-primary mb-3">Update</button>
 </form>
 
 <p><a href="/balances/<%= lineItem.balance %>">Go Back</a></p>

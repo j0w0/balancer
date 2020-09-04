@@ -1,30 +1,24 @@
 <%- include('../partials/header') %>
 
-<h2>New Log</h2>
+<h2>New Balance Log</h2>
 
 <form action="/balances" method="POST" autocomplete="off">
 
-    <label>
-        <input type="date" name="date" value="<%= today %>" />
-    </label>
+    <div class="form-group">
+        <input type="date" name="date" class="form-control" value="<%= today %>" required />
+    </div>
 
-    <br /><br />
+    <div class="form-group">
+        <label for="startingBalance">Starting Balance</label>
+        <input type="text" name="startingBalance" id="startingBalance" class="form-control" value="0.00" required />
+    </div>
 
-    <label>
-        Starting Balance<br />
-        <input type="text" name="startingBalance" value="0.00" />
-    </label>
+    <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes" class="form-control"></textarea>
+    </div>
 
-    <br /><br />
-
-    <label>
-        Notes<br />
-        <textarea name="notes"></textarea>
-    </label>
-
-    <br /><br />
-
-    <button type="submit">Create</button>
+    <button type="submit" class="btn btn-primary mb-3">Create</button>
 </form>
 
 <p><a href="/dashboard">Go Back</a></p>

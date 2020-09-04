@@ -8,27 +8,28 @@ const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
 
 <form action="/budgets" method="POST" autocomplete="off">
 
-    <label>
-        Budget Name
-        <input type="text" name="name">
-    </label>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="form-control" />
+    </div>
 
-    <br /><br />
+    <div class="form-group">
+        <label class="d-block">Pay Schedule</label>
+        <% paySchedules.forEach(schedule => { %>
+        <div class="form-check form-check-inline">
+            <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="paySchedule" value="<%= schedule %>">
+                <%= schedule %>
+            </label>
+        </div>
+        <%
+        });
+        %>
+    </div>
 
-    <label>
-        Pay Schedule
-    </label><br />
-    <% paySchedules.forEach(schedule => { %>
-    <label>
-        <input type="radio" name="paySchedule" value="<%= schedule %>"> <%= schedule %><br />
-    </label>
-    <%
-    });
-    %>
-
-    <br />
-
-    <button type="submit">Create</button>
+    <button type="submit" class="btn btn-primary mb-3">Create</button>
 </form>
+
+<p><a href="/dashboard">Go Back</a></p>
 
 <%- include('../partials/footer') %>

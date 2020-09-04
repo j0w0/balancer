@@ -2,7 +2,7 @@
 
 <div class="d-flex align-items-center justify-content-between mb-3">
     <h2 class="mb-0">Dashboard</h2>
-    <p class="mb-0"><%= `Hey, ${user.firstName}` %> <%= randomEmoji %></p>
+    <p class="mb-0"><%= `Hey, ${user.firstName} ${randomEmoji}` %></p>
 </div>
 
 <div class="row align-items-center mb-2">
@@ -10,14 +10,13 @@
         <h4 class="mb-sm-0">Your Bills</h4>
     </div>
     <div class="col">
-        <%
-        const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
+        <% const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ]; %>
 
-        if(budgets.length > 0) {
-            budgets.forEach(budget => { %>
+        <% if(budgets.length > 0) { %>
+        <% budgets.forEach(budget => { %>
 
         <form action="/budgets/<%= budget.id %>?_method=PUT" method="POST" autocomplete="off">
-            <div class="form-row align-items-center">
+            <div class="form-row align-items-center mb-2">
                 <label for="paySchedule" class="col-sm-4 text-sm-right mb-sm-0">
                     Pay Schedule
                 </label>
@@ -25,13 +24,13 @@
                     <div class="input-group">
                         <select name="paySchedule" class="custom-select mb-0" id="paySchedule">
                             <% paySchedules.forEach(schedule => { %>
-                            <option value="<%= schedule %>" <% if(budget.paySchedule === schedule) { %> selected<%
-                                } %>>
+                            <option value="<%= schedule %>" <% if(budget.paySchedule === schedule) { %> selected
+                                <% } %>>
                                 <%= schedule %>
                             </option>
                             <%
-                                });
-                                %>
+                            });
+                            %>
                         </select>
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-secondary">Update</button>
@@ -41,16 +40,13 @@
             </div>
         </form>
 
-        <%
-            });
-        }
-        %>
+        <% }); %>
+        <% } %>
     </div>
 </div>
 
-<%
-budgets.forEach(budget => {
-    if(budget.bills.length > 0) { %>
+<% budgets.forEach(budget => { %>
+<% if(budget.bills.length > 0) { %>
 
 <div class="table-responsive">
     <table class="table table-hover table-bordered">
@@ -77,7 +73,7 @@ budgets.forEach(budget => {
                 <th class="text-right">Pymt 4</th><%
                 }
                 %>
-                <th>Bill Pay Website</th>
+                <th>Bill Pay</th>
                 <th colspan="2"></th>
             </tr>
         </thead>
@@ -148,11 +144,9 @@ budgets.forEach(budget => {
 
 <% } %>
 
-<p><a href="/budgets/<%= budget.id %>/bills/new">Add a Bill</a></p>
+<p><a href="/budgets/<%= budget.id %>/bills/new">Add Bill</a></p>
 
-<%
-});
-%>
+<% }); %>
 
 <h4>Balance Tracker</h4>
 
@@ -194,6 +188,6 @@ budgets.forEach(budget => {
 
 <% } %>
 
-<p><a href="/balances/new">New Log</a></p>
+<p><a href="/balances/new">New Balance Log</a></p>
 
 <%- include('partials/footer') %>

@@ -24,6 +24,7 @@ Stay on top of your finances. Track your bills and log your balances.
 ## Getting Started
 
 - Check out the [Demo](https://j0w0-balancer.herokuapp.com/) on Heroku
+- [Trello planning](https://trello.com/b/N82CQMn5/balancer)
 - Fork repo to make any feature changes and/or pull requests.
 
 ## Next Steps
@@ -40,5 +41,3 @@ Stay on top of your finances. Track your bills and log your balances.
 <img src='docs/balancer-erd.png' width='100%'>
 
 *Mongoose Schema ERD for MongoDB*
-
-<!-- [Trello](https://trello.com/b/N82CQMn5/balancer) -->

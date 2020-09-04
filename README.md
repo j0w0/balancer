@@ -18,7 +18,8 @@ Stay on top of your finances. Track your bills and log your balances.
 - Bootstrap
 - Google OAuth
 - PassportJS
-- CRUD Functionality
+- EJS (Embedded JavaScript)
+- CRUD Operations
 
 ## Getting Started
 

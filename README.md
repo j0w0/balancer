@@ -4,8 +4,7 @@ Stay on top of your finances. Track your bills and log your balances.
 
 ## Screenshots
 
-<img src='docs/balancer-dashboard.png' width='49.5%'>
-<img src='docs/balancer-manage.png' width='49.5%'>
+<img src='docs/balancer-dashboard.png' width='50%'><img src='docs/balancer-manage.png' width='50%'>
 
 ## Technologies Used
 

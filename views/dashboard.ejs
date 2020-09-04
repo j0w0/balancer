@@ -2,189 +2,194 @@
 
 <h2>Dashboard</h2>
 
-<p><%= `Welcome, ${user.firstName}!` %></p>
+<p><%= `Hey, ${user.firstName}` %> 👋🏼</p>
 
-<h3>Your Bills</h3>
+<hr />
 
-<%
-const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
+<div class="row align-items-center mb-2">
+    <div class="col-sm-3 col-md-6 col-lg-7 col-xl-8">
+        <h4 class="mb-sm-0">Your Bills</h4>
+    </div>
+    <div class="col">
+        <%
+        const paySchedules = [ 'Weekly', 'Bi-Weekly', 'Semi-Monthly', 'Monthly' ];
 
-if(budgets.length > 0) {
-    budgets.forEach(budget => { %>
+        if(budgets.length > 0) {
+            budgets.forEach(budget => { %>
 
-<form action="/budgets/<%= budget.id %>?_method=PUT" method="POST" autocomplete="off">
-    <label>
-        Pay Schedule
-        <select name="paySchedule">
-            <%
-                paySchedules.forEach(schedule => { %>
-            <option value="<%= schedule %>" <% if(budget.paySchedule === schedule) { %> selected <% } %>>
-                <%= schedule %>
-            </option>
-            <%
-                });
-                %>
-        </select>
-    </label>
-    <button type="submit">Update</button>
-</form>
+        <form action="/budgets/<%= budget.id %>?_method=PUT" method="POST" autocomplete="off">
+            <div class="form-row align-items-center">
+                <label for="paySchedule" class="col-sm-4 text-sm-right mb-sm-0">
+                    Pay Schedule
+                </label>
+                <div class="col">
+                    <div class="input-group">
+                        <select name="paySchedule" class="custom-select mb-0" id="paySchedule">
+                            <% paySchedules.forEach(schedule => { %>
+                            <option value="<%= schedule %>" <% if(budget.paySchedule === schedule) { %> selected<%
+                                } %>>
+                                <%= schedule %>
+                            </option>
+                            <%
+                                });
+                                %>
+                        </select>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-secondary">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
 
-<%
-if(budget.bills.length > 0) { %>
-
-<br />
-
-<table>
-    <thead>
-        <tr align="left">
-            <th>Bill</th>
-            <th>Due Date</th>
-            <th align="right">Total</th>
-
-            <% if(budget.paySchedule === "Weekly" ||
-                budget.paySchedule === "Bi-Weekly" ||
-                budget.paySchedule === "Semi-Monthly" ||
-                budget.paySchedule === "Monthly") { %>
-
-            <th align="right">One</th>
-
-            <%
-            }
-
-            if(budget.paySchedule === "Weekly" ||
-                budget.paySchedule === "Bi-Weekly" ||
-                budget.paySchedule === "Semi-Monthly") { %>
-
-            <th align="right">Two</th>
-
-            <%
-            }
-
-            if(budget.paySchedule === "Weekly") { %>
-
-            <th align="right">Three</th>
-            <th align="right">Four</th>
-
-            <%
-            }
-            %>
-
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <% budget.bills.forEach(bill => { %>
-        <tr>
-            <td><%= bill.name %></td>
-            <td><%= bill.dueDate %></td>
-            <td align="right">$<%= bill.total.toFixed(2) %></td>
-
-            <% if(budget.paySchedule === "Weekly" ||
-                budget.paySchedule === "Bi-Weekly" ||
-                budget.paySchedule === "Semi-Monthly" ||
-                budget.paySchedule === "Monthly") { %>
-
-            <td align="right">$<%= !bill.installments[0] ? 0 : bill.installments[0] %></td>
-
-            <%
-            }
-
-            if(budget.paySchedule === "Weekly" ||
-                budget.paySchedule === "Bi-Weekly" ||
-                budget.paySchedule === "Semi-Monthly") { %>
-
-            <td align="right">$<%= !bill.installments[1] ? 0 : bill.installments[1] %></td>
-
-            <%
-            }
-
-            if(budget.paySchedule === "Weekly") { %>
-
-            <td align="right">$<%= !bill.installments[2] ? 0 : bill.installments[2] %></td>
-            <td align="right">$<%= !bill.installments[3] ? 0 : bill.installments[3] %></td>
-
-            <%
-            }
-            %>
-
-            <td>
-                <% if(bill.url) { %>
-                <a href="<%= bill.url %>" target="_blank">Bill Pay Link</a>
-                <% } %>
-            </td>
-            <td>
-                <a href="/bills/<%= bill.id %>">Update</a>
-            </td>
-            <td>
-                <form action="/bills/<%= bill.id %>?_method=DELETE" method="POST" autocomplete="off">
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
         <%
             });
+        }
+        %>
+    </div>
+</div>
+
+<%
+budgets.forEach(budget => {
+    if(budget.bills.length > 0) { %>
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th>Bill</th>
+                <th>Due Date</th>
+                <th>Auto-Pay</th>
+                <th class="text-right">Monthly Total</th>
+
+                <% if(budget.paySchedule === "Weekly" ||
+                    budget.paySchedule === "Bi-Weekly" ||
+                    budget.paySchedule === "Semi-Monthly" ||
+                    budget.paySchedule === "Monthly") { %>
+                <th class="text-right">Pymt 1</th><%
+                }
+                if(budget.paySchedule === "Weekly" ||
+                    budget.paySchedule === "Bi-Weekly" ||
+                    budget.paySchedule === "Semi-Monthly") { %>
+                <th class="text-right">Pymt 2</th><%
+                }
+                if(budget.paySchedule === "Weekly") { %>
+                <th class="text-right">Pymt 3</th>
+                <th class="text-right">Pymt 4</th><%
+                }
+                %>
+                <th>Bill Pay Website</th>
+                <th colspan="2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% budget.bills.forEach(bill => { %>
+            <tr>
+                <td><%= bill.name %></td>
+                <td><%= bill.dueDate %></td>
+                <td>
+                    <% if(bill.autoPay) { %>
+                    Yes <% if(bill.autoPayAccount) { %> / <%= bill.autoPayAccount %> <% } %>
+                    <% } else { %>
+                    No
+                    <% } %>
+                </td>
+                <td class="text-right">$<%= bill.total.toFixed(2) %></td>
+
+                <% if(budget.paySchedule === "Weekly" ||
+                budget.paySchedule === "Bi-Weekly" ||
+                budget.paySchedule === "Semi-Monthly" ||
+                budget.paySchedule === "Monthly") { %>
+                <td class="text-right">$<%= !bill.installments[0] ? 0 : bill.installments[0] %></td><%
+                }
+                if(budget.paySchedule === "Weekly" ||
+                    budget.paySchedule === "Bi-Weekly" ||
+                    budget.paySchedule === "Semi-Monthly") { %>
+                <td class="text-right">$<%= !bill.installments[1] ? 0 : bill.installments[1] %></td><%
+                }
+                if(budget.paySchedule === "Weekly") { %>
+                <td class="text-right">$<%= !bill.installments[2] ? 0 : bill.installments[2] %></td>
+                <td class="text-right">$<%= !bill.installments[3] ? 0 : bill.installments[3] %></td><%
+                }
+                %>
+                <td>
+                    <% if(bill.url) { %>
+                    <a href="<%= bill.url %>" target="_blank">Link</a>
+                    <% } %>
+                </td>
+                <td>
+                    <a href="/bills/<%= bill.id %>">Update</a>
+                </td>
+                <td>
+                    <form action="/bills/<%= bill.id %>?_method=DELETE" method="POST" autocomplete="off">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <%
+            });
             %>
-    </tbody>
-</table>
 
-<br />
+            <!-- <tr class="text-right">
+                <td colspan="3" class="text-left">Totals</td>
+                <td>$0</td>
+                <td>$</td>
+                <td>$</td>
+                <td>$</td>
+                <td>$</td>
+                <td colspan="3"></td>
+            </tr> -->
+        </tbody>
+    </table>
+</div>
 
-<%
-} else { %>
+<% } else { %>
 
-<p>No bills yet. Add one to get started 🤘🏼</p>
+<p>No bills yet. Add one to get started.</p>
 
-<%
-}
-%>
+<% } %>
 
 <a href="/budgets/<%= budget.id %>/bills/new">Add a Bill</a>
 
 <%
-    });
-} else { %>
-
-<p>Add a Budget to get this show on the road 🔥</p>
-<a href="/budgets/new">New Budget</a>
-
-<%
-}
+});
 %>
 
-<h3>Balance Tracker</h3>
+<hr />
+
+<h4>Balance Tracker</h4>
 
 <% if(balances.length > 0) { %>
 
-<table>
-    <thead>
-        <tr align="left">
-            <th>Date</th>
-            <th>Starting</th>
-            <th>Ending</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <% balances.forEach(balance => { %>
-        <tr>
-            <td><%= balance.dateFormatted %></td>
-            <td align="right">$<%= balance.startingBalance.toFixed(2) %></td>
-            <td align="right">$<%= balance.runningBalance %></td>
-            <td><a href="/balances/<%= balance.id %>">Manage</a></td>
-            <td>
-                <form action="/balances/<%= balance.id %>?_method=DELETE" method="POST" autocomplete="off">
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
-        <% }); %>
-    </tbody>
-</table>
-
-<br />
+<div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th>Date</th>
+                <th class="text-right">Starting</th>
+                <th class="text-right">Ending</th>
+                <th>Notes</th>
+                <th colspan="2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% balances.forEach(balance => { %>
+            <tr>
+                <td><%= balance.dateFormatted %></td>
+                <td class="text-right">$<%= balance.startingBalance.toFixed(2) %></td>
+                <td class="text-right">$<%= balance.runningBalance %></td>
+                <td><%= balance.notes %></td>
+                <td><a href="/balances/<%= balance.id %>">Manage</a></td>
+                <td>
+                    <form action="/balances/<%= balance.id %>?_method=DELETE" method="POST" autocomplete="off">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
 
 <% } else { %>
 

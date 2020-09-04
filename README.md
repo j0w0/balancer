@@ -4,7 +4,8 @@ Stay on top of your finances. Track your bills and log your balances.
 
 ## Screenshots
 
-<img src='docs/balancer-dashboard.png' width='50%'><img src='docs/balancer-manage.png' width='50%'>
+<img src='docs/balancer-dashboard.png' width='100%'>
+<img src='docs/balancer-manage.png' width='100%'>
 
 ## Technologies Used
 
@@ -36,5 +37,7 @@ Stay on top of your finances. Track your bills and log your balances.
 ## Planning
 
 <img src='docs/balancer-erd.png' width='100%'>
+
+*Mongoose Schema ERD for MongoDB*
 
 <!-- [Trello](https://trello.com/b/N82CQMn5/balancer) -->
